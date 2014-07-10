@@ -12,6 +12,18 @@
 #import "SpineSkeleton.h"
 #import "PJBarNode.h"
 
+static CGFloat normalize(CGFloat angle)
+{
+   return fmodf(angle, 2*M_PI);
+}
+
+static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
+{
+   return (angle >= angleStart && angle < angleEnd) ||
+          (angle < angleStart && angle >= angleEnd);
+   
+}
+
 @interface PJGameScene ()
 
 @property (nonatomic, assign, readonly) CGPoint trackCenter;
@@ -109,10 +121,27 @@
    if ( self.lastTime )
    {
       NSTimeInterval dt = currentTime - self.lastTime;
+      CGFloat oldBarAngle = self.barNode.zRotation;
       [self.barNode updateWithDeltaTime:dt];
+      [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
    }
    
    self.lastTime = currentTime;
+}
+
+-(void)hitTestWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
+{
+#pragma warning Test against the players
+   CGFloat angleDelta = newBarAngle - oldBarAngle;
+   CGFloat angleStart = normalize(oldBarAngle);
+   CGFloat angleEnd   = angleStart + angleDelta;
+   
+   CGFloat testAngle = M_PI/4;
+   if ( angleInRange(testAngle, angleStart, angleEnd) )
+   {
+      NSLog(@"hit %f", testAngle);
+   }
+   
 }
 
 @end
