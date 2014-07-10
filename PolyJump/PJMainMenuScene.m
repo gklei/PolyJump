@@ -26,7 +26,7 @@
 {
    self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1.0];
 
-   SKLabelNode *mainLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+   SKLabelNode *mainLabel = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
 
    mainLabel.fontColor = [SKColor blackColor];
    mainLabel.text = @"Poly Jump";
