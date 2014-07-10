@@ -7,7 +7,7 @@
 //
 
 #import "PJViewController.h"
-#import "PJMyScene.h"
+#import "PJMainMenuScene.h"
 
 @implementation PJViewController
 
@@ -16,12 +16,12 @@
     [super viewDidLoad];
 
     // Configure the view.
-    SKView * skView = (SKView *)self.view;
-    skView.showsFPS = YES;
-    skView.showsNodeCount = YES;
-    
+    SKView* skView = (SKView *)self.view;
+//    skView.showsFPS = YES;
+//    skView.showsNodeCount = YES;
+
     // Create and configure the scene.
-    SKScene * scene = [PJMyScene sceneWithSize:skView.bounds.size];
+    SKScene * scene = [PJMainMenuScene sceneWithSize:skView.bounds.size];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
     // Present the scene.

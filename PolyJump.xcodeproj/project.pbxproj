@@ -25,6 +25,9 @@
 		8E11BE68196E23FB00730B6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE40196E23FB00730B6B /* UIKit.framework */; };
 		8E11BE70196E23FB00730B6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BE6E196E23FB00730B6B /* InfoPlist.strings */; };
 		8E11BE72196E23FB00730B6B /* PolyJumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE71196E23FB00730B6B /* PolyJumpTests.m */; };
+		8E11BE7D196E253300730B6B /* PJMainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE7C196E253300730B6B /* PJMainMenuScene.m */; };
+		8E11BE80196E263200730B6B /* PJGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE7F196E263200730B6B /* PJGameScene.m */; };
+		8E11BE83196E266400730B6B /* PJPlayLabelNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE82196E266400730B6B /* PJPlayLabelNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,12 @@
 		8E11BE6D196E23FB00730B6B /* PolyJumpTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PolyJumpTests-Info.plist"; sourceTree = "<group>"; };
 		8E11BE6F196E23FB00730B6B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8E11BE71196E23FB00730B6B /* PolyJumpTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyJumpTests.m; sourceTree = "<group>"; };
+		8E11BE7B196E253300730B6B /* PJMainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJMainMenuScene.h; sourceTree = "<group>"; };
+		8E11BE7C196E253300730B6B /* PJMainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJMainMenuScene.m; sourceTree = "<group>"; };
+		8E11BE7E196E263200730B6B /* PJGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJGameScene.h; sourceTree = "<group>"; };
+		8E11BE7F196E263200730B6B /* PJGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJGameScene.m; sourceTree = "<group>"; };
+		8E11BE81196E266400730B6B /* PJPlayLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJPlayLabelNode.h; sourceTree = "<group>"; };
+		8E11BE82196E266400730B6B /* PJPlayLabelNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJPlayLabelNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +140,12 @@
 				8E11BE57196E23FB00730B6B /* PJViewController.m */,
 				8E11BE59196E23FB00730B6B /* PJMyScene.h */,
 				8E11BE5A196E23FB00730B6B /* PJMyScene.m */,
+				8E11BE7B196E253300730B6B /* PJMainMenuScene.h */,
+				8E11BE7C196E253300730B6B /* PJMainMenuScene.m */,
+				8E11BE7E196E263200730B6B /* PJGameScene.h */,
+				8E11BE7F196E263200730B6B /* PJGameScene.m */,
+				8E11BE81196E266400730B6B /* PJPlayLabelNode.h */,
+				8E11BE82196E266400730B6B /* PJPlayLabelNode.m */,
 				8E11BE5C196E23FB00730B6B /* Spaceship.png */,
 				8E11BE5E196E23FB00730B6B /* Images.xcassets */,
 				8E11BE45196E23FB00730B6B /* Supporting Files */,
@@ -267,6 +282,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E11BE83196E266400730B6B /* PJPlayLabelNode.m in Sources */,
+				8E11BE80196E263200730B6B /* PJGameScene.m in Sources */,
+				8E11BE7D196E253300730B6B /* PJMainMenuScene.m in Sources */,
 				8E11BE5B196E23FB00730B6B /* PJMyScene.m in Sources */,
 				8E11BE4F196E23FB00730B6B /* PJAppDelegate.m in Sources */,
 				8E11BE58196E23FB00730B6B /* PJViewController.m in Sources */,
