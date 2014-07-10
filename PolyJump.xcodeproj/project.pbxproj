@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		43B5635F196E33EF00D93394 /* PJBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B5635E196E33EF00D93394 /* PJBarNode.m */; };
+		43B56362196E404C00D93394 /* PegNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B56361196E404C00D93394 /* PegNode.m */; };
 		8E11BE3D196E23FB00730B6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3C196E23FB00730B6B /* Foundation.framework */; };
 		8E11BE3F196E23FB00730B6B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */; };
 		8E11BE41196E23FB00730B6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE40196E23FB00730B6B /* UIKit.framework */; };
@@ -40,6 +41,7 @@
 		8E11BF5B196E44B300730B6B /* skeleton.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF58196E44B300730B6B /* skeleton.atlas */; };
 		8E11BF5C196E44B300730B6B /* skeleton.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF59196E44B300730B6B /* skeleton.json */; };
 		8E11BF5D196E44B300730B6B /* skeleton.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF5A196E44B300730B6B /* skeleton.png */; };
+		8E11BF60196E4A1000730B6B /* PegNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF5F196E4A1000730B6B /* PegNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,7 @@
 /* Begin PBXFileReference section */
 		43B5635D196E33EF00D93394 /* PJBarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJBarNode.h; sourceTree = "<group>"; };
 		43B5635E196E33EF00D93394 /* PJBarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJBarNode.m; sourceTree = "<group>"; };
+		43B56361196E404C00D93394 /* PegNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PegNode.m; sourceTree = "<group>"; };
 		8E11BE39196E23FB00730B6B /* PolyJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolyJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E11BE3C196E23FB00730B6B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -105,6 +108,8 @@
 		8E11BF58196E44B300730B6B /* skeleton.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = skeleton.atlas; sourceTree = "<group>"; };
 		8E11BF59196E44B300730B6B /* skeleton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = skeleton.json; sourceTree = "<group>"; };
 		8E11BF5A196E44B300730B6B /* skeleton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skeleton.png; sourceTree = "<group>"; };
+		8E11BF5E196E4A1000730B6B /* PegNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PegNode.h; sourceTree = "<group>"; };
+		8E11BF5F196E4A1000730B6B /* PegNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PegNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +172,8 @@
 		8E11BE44196E23FB00730B6B /* PolyJump */ = {
 			isa = PBXGroup;
 			children = (
+				8E11BF5E196E4A1000730B6B /* PegNode.h */,
+				8E11BF5F196E4A1000730B6B /* PegNode.m */,
 				8E11BF58196E44B300730B6B /* skeleton.atlas */,
 				8E11BF59196E44B300730B6B /* skeleton.json */,
 				8E11BF5A196E44B300730B6B /* skeleton.png */,
@@ -361,6 +368,8 @@
 				8E11BE4F196E23FB00730B6B /* PJAppDelegate.m in Sources */,
 				8E11BF56196E402200730B6B /* SGG_SpineJSONTools.m in Sources */,
 				8E11BF57196E402200730B6B /* SGG_SpineSkin.m in Sources */,
+				8E11BF60196E4A1000730B6B /* PegNode.m in Sources */,
+				43B56362196E404C00D93394 /* PegNode.m in Sources */,
 				8E11BE86196E29F700730B6B /* PJTrackNode.m in Sources */,
 				8E11BE58196E23FB00730B6B /* PJViewController.m in Sources */,
 				8E11BF55196E402200730B6B /* SGG_SpineBoneAction.m in Sources */,

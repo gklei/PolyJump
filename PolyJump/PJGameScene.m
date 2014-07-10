@@ -9,9 +9,12 @@
 #import "PJGameScene.h"
 #import "PJBarNode.h"
 #import "SpineImport.h"
+#import "PegNode.h"
 
 static CGFloat normalize(CGFloat angle)
 {
+   while(angle<0)
+      angle += 2*M_PI;
    return fmodf(angle, 2*M_PI);
 }
 
@@ -31,6 +34,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) PJBarNode* barNode;
 @property (nonatomic) SGG_Spine* ninja;
 
+@property (nonatomic) NSInteger numHitPegs;
+
 @end
 
 @implementation PJGameScene
@@ -42,7 +47,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
-
+      [self addPeg];
+      [self addPeg];
+      [self addPeg];
+      [self addPeg];
       // Currently Broken!
       [self setupNinja];
    }
@@ -67,12 +75,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    SKShapeNode* track = [SKShapeNode node];
    CGRect trackRect = CGRectMake(-self.trackRadius, -self.trackRadius, self.trackRadius*2, self.trackRadius*2);
-   trackRect = CGRectInset(trackRect, 50, 50);
 
    UIBezierPath* trackPath = [UIBezierPath bezierPathWithOvalInRect:trackRect];
    track.path = trackPath.CGPath;
    track.strokeColor = [SKColor blueColor];
-   track.lineWidth = 50.f;
+   track.lineWidth = self.frame.size.width/30;
    track.antialiased = YES;
    track.position = self.trackCenter;
 
@@ -85,6 +92,15 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    self.barNode.position = self.trackCenter;
    
    [self addChild:self.barNode];
+}
+
+- (void)addPeg
+{
+   PegNode* pegNode = [PegNode node];
+   CGFloat angle = rand() % 360;
+   pegNode.position = [PegNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
+   pegNode.name = @"enemy";
+   [self addChild:pegNode];
 }
 
 - (void)setupNinja
@@ -118,7 +134,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (CGFloat)trackRadius
 {
-   return CGRectGetWidth(self.frame)*.5;
+   return CGRectGetWidth(self.frame)*.5 - 25;
 }
 
 - (void)update:(NSTimeInterval)currentTime
@@ -136,17 +152,28 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 -(void)hitTestWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
 {
-#pragma warning Test against the players
    CGFloat angleDelta = newBarAngle - oldBarAngle;
    CGFloat angleStart = normalize(oldBarAngle);
    CGFloat angleEnd   = angleStart + angleDelta;
    
-   CGFloat testAngle = M_PI/4;
-   if ( angleInRange(testAngle, angleStart, angleEnd) )
-   {
-      NSLog(@"hit %f", testAngle);
-   }
+   [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
+      PegNode* pegNode = (PegNode *)node;
+      CGFloat testAngle = normalize([pegNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
+      if ( angleInRange(testAngle, angleStart, angleEnd) )
+      {
+//         NSLog(@"hit pegNode %@", pegNode);
+         self.numHitPegs = self.numHitPegs + 1;
+      }
+   }];
    
+   
+   if ( self.numHitPegs > 3 )
+      [self endGame];
+}
+
+-(void)endGame
+{
+   self.scene.view.paused = YES;
 }
 
 @end
