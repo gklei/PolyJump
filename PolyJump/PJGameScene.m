@@ -41,6 +41,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
+      [self addPeg];
    }
    return self;
 }
@@ -63,7 +64,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    SKShapeNode* track = [SKShapeNode node];
    CGRect trackRect = CGRectMake(-self.trackRadius, -self.trackRadius, self.trackRadius*2, self.trackRadius*2);
-   trackRect = CGRectInset(trackRect, 50, 50);
 
    UIBezierPath* trackPath = [UIBezierPath bezierPathWithOvalInRect:trackRect];
    track.path = trackPath.CGPath;
@@ -83,6 +83,20 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.barNode];
 }
 
+- (void)addPeg
+{
+   CGFloat pegRadius = 10;
+   CGRect pegRect = CGRectMake(-pegRadius, -pegRadius, pegRadius*2, pegRadius*2);
+   SKShapeNode* pegNode = [SKShapeNode node];
+   pegNode.path = [UIBezierPath bezierPathWithOvalInRect:pegRect].CGPath;
+   pegNode.fillColor = [UIColor purpleColor];
+   CGFloat angleDegrees = rand() % 360;
+   CGFloat angleRad = (angleDegrees*2*M_PI)/360;
+   pegNode.position = CGPointMake(self.trackCenter.x + self.trackRadius * cos(angleRad),
+                                  self.trackCenter.y + self.trackRadius * sin(angleRad));
+   [self addChild:pegNode];
+}
+
 - (CGPoint)trackCenter
 {
    CGFloat padding = 20;
@@ -91,7 +105,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (CGFloat)trackRadius
 {
-   return CGRectGetWidth(self.frame)*.5;
+   return CGRectGetWidth(self.frame)*.5 - 25;
 }
 
 - (void)update:(NSTimeInterval)currentTime
