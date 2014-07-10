@@ -8,6 +8,7 @@
 
 #import "PJGameScene.h"
 #import "DZSpineScene.h"
+#import "PJBarNode.h"
 
 @interface PJGameScene ()
 
@@ -15,6 +16,7 @@
 @property (nonatomic, assign, readonly) CGFloat trackRadius;
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
+@property (nonatomic) PJBarNode* barNode;
 
 @end
 
@@ -63,15 +65,10 @@
 
 - (void)setupBar
 {
-   CGFloat barThickness = 10;
-   CGRect rect = CGRectMake(0, -barThickness, self.trackRadius, barThickness);
-   SKShapeNode* barNode = [SKShapeNode node];
-   barNode.path = [UIBezierPath bezierPathWithRect:rect].CGPath;
-   barNode.fillColor = [SKColor redColor];
-   barNode.lineWidth = 0.0;
-   barNode.position = self.trackCenter;
-   barNode.zRotation = M_PI_4;
-   [self addChild:barNode];
+   self.barNode = [PJBarNode nodeWithBarLength:self.trackRadius];
+   self.barNode.position = self.trackCenter;
+   
+   [self addChild:self.barNode];
 }
 
 - (CGPoint)trackCenter
