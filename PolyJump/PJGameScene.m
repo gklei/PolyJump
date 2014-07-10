@@ -7,6 +7,7 @@
 //
 
 #import "PJGameScene.h"
+#import "DZSpineScene.h"
 
 @interface PJGameScene ()
 
