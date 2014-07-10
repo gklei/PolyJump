@@ -8,6 +8,8 @@
 
 #import "PJGameScene.h"
 #import "DZSpineScene.h"
+#import "DZSpineSceneBuilder.h"
+#import "SpineSkeleton.h"
 #import "PJBarNode.h"
 
 static CGFloat normalize(CGFloat angle)
@@ -30,6 +32,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
 
+@property (nonatomic) SpineSkeleton* ninjaSkeleton;
+@property (nonatomic) DZSpineSceneBuilder* builder;
+@property (nonatomic) SKNode* ninja;
+@property (nonatomic) SKNode* spineNode;
+
 @end
 
 @implementation PJGameScene
@@ -42,6 +49,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self setupTrack];
       [self setupBar];
       [self addPeg];
+      // Currently Broken!
+//      [self setupNinja];
    }
    return self;
 }
@@ -83,6 +92,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.barNode];
 }
 
+<<<<<<< HEAD
 - (void)addPeg
 {
    CGFloat pegRadius = 10;
@@ -95,6 +105,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    pegNode.position = CGPointMake(self.trackCenter.x + self.trackRadius * cos(angleRad),
                                   self.trackCenter.y + self.trackRadius * sin(angleRad));
    [self addChild:pegNode];
+=======
+- (void)setupNinja
+{
+   self.ninjaSkeleton = [DZSpineSceneBuilder loadSkeletonName:@"skeleton" scale:0.5];
+   self.builder = [DZSpineSceneBuilder builder];
+   self.ninja = [SKNode node];
+   self.ninja.position = CGPointMake(self.size.width/2, 0);
+
+   [self addChild:self.ninja];
+   self.spineNode = [_builder nodeWithSkeleton:self.ninjaSkeleton animationName:@"trip" loop:NO];
+   [self.ninja addChild:_spineNode];
+>>>>>>> 66b8c572bbe02e77972ef40965398c76c383fac5
 }
 
 - (CGPoint)trackCenter

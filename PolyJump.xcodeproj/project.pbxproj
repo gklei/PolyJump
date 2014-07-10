@@ -69,6 +69,9 @@
 		8E11BF20196E321A00730B6B /* DZSpineSpriteKitAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF0D196E321A00730B6B /* DZSpineSpriteKitAnimation.m */; };
 		8E11BF21196E321A00730B6B /* DZSpineSpriteKitMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF0F196E321A00730B6B /* DZSpineSpriteKitMaps.m */; };
 		8E11BF22196E321A00730B6B /* DZSpineTexturePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF11196E321A00730B6B /* DZSpineTexturePool.m */; };
+		8E11BF38196E3DA600730B6B /* skeleton.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF35196E3DA600730B6B /* skeleton.atlas */; };
+		8E11BF39196E3DA600730B6B /* skeleton.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF36196E3DA600730B6B /* skeleton.json */; };
+		8E11BF3A196E3DA600730B6B /* skeleton.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF37196E3DA600730B6B /* skeleton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +198,9 @@
 		8E11BF0F196E321A00730B6B /* DZSpineSpriteKitMaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZSpineSpriteKitMaps.m; sourceTree = "<group>"; };
 		8E11BF10196E321A00730B6B /* DZSpineTexturePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZSpineTexturePool.h; sourceTree = "<group>"; };
 		8E11BF11196E321A00730B6B /* DZSpineTexturePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZSpineTexturePool.m; sourceTree = "<group>"; };
+		8E11BF35196E3DA600730B6B /* skeleton.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = skeleton.atlas; sourceTree = "<group>"; };
+		8E11BF36196E3DA600730B6B /* skeleton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = skeleton.json; sourceTree = "<group>"; };
+		8E11BF37196E3DA600730B6B /* skeleton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skeleton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +264,9 @@
 		8E11BE44196E23FB00730B6B /* PolyJump */ = {
 			isa = PBXGroup;
 			children = (
+				8E11BF35196E3DA600730B6B /* skeleton.atlas */,
+				8E11BF36196E3DA600730B6B /* skeleton.json */,
+				8E11BF37196E3DA600730B6B /* skeleton.png */,
 				43B5635D196E33EF00D93394 /* PJBarNode.h */,
 				43B5635E196E33EF00D93394 /* PJBarNode.m */,
 				8E11BE4D196E23FB00730B6B /* PJAppDelegate.h */,
@@ -525,7 +534,10 @@
 				8E11BE5D196E23FB00730B6B /* Spaceship.png in Resources */,
 				8E11BE5F196E23FB00730B6B /* Images.xcassets in Resources */,
 				8E11BE55196E23FB00730B6B /* Main_iPad.storyboard in Resources */,
+				8E11BF39196E3DA600730B6B /* skeleton.json in Resources */,
+				8E11BF3A196E3DA600730B6B /* skeleton.png in Resources */,
 				8E11BE52196E23FB00730B6B /* Main_iPhone.storyboard in Resources */,
+				8E11BF38196E3DA600730B6B /* skeleton.atlas in Resources */,
 				8E11BE49196E23FB00730B6B /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

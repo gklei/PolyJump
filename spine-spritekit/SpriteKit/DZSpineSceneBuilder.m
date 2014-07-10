@@ -297,7 +297,7 @@ static void _spine_adapt_disposeTexture( void * rendobj );
 {
     spine_set_handler_createtexture(_spine_adapt_createTexture);
     spine_set_handler_disposetexture(_spine_adapt_disposeTexture);
-    
+
     return [SpineSkeleton skeletonWithName:[name stringByAppendingPathExtension:@"json"]
                                  atlasName:[name stringByAppendingPathExtension:@"atlas"]
                                      scale:scale];
