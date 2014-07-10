@@ -8,6 +8,8 @@
 
 #import "PJGameScene.h"
 #import "DZSpineScene.h"
+#import "DZSpineSceneBuilder.h"
+#import "SpineSkeleton.h"
 #import "PJBarNode.h"
 
 @interface PJGameScene ()
@@ -17,6 +19,12 @@
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
+
+@property (nonatomic) SpineSkeleton* spineSkeleton;
+
+@property (nonatomic) DZSpineSceneBuilder* builder;
+@property (nonatomic) SKNode* ninja;
+@property (nonatomic) SKNode* spineNode;
 
 @end
 
