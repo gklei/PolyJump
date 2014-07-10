@@ -68,7 +68,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    UIBezierPath* trackPath = [UIBezierPath bezierPathWithOvalInRect:trackRect];
    track.path = trackPath.CGPath;
    track.strokeColor = [SKColor blueColor];
-   track.lineWidth = 50.f;
+   track.lineWidth = self.frame.size.width/30;
    track.antialiased = YES;
    track.position = self.trackCenter;
 
@@ -119,7 +119,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    {
       NSLog(@"hit %f", testAngle);
    }
-   
 }
 
 @end
