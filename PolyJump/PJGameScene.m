@@ -12,6 +12,7 @@
 #import "PegNode.h"
 #import "PJButtonLabelNode.h"
 #import "PJMainMenuScene.h"
+#import "UIGestureRecognizer+BlocksKit.h"
 
 static CGFloat normalize(CGFloat angle)
 {
@@ -57,6 +58,17 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self setupNinja];
    }
    return self;
+}
+
+- (void)didMoveToView:(SKView *)view
+{
+   UITapGestureRecognizer* tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
+                                            {
+                                               NSLog(@"tap!");
+                                               [self.ninja activateAnimations];
+                                            }];
+   
+   [view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)setupMainLabel
