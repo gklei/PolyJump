@@ -13,6 +13,8 @@
 @property (nonatomic, assign, readonly) CGPoint trackCenter;
 @property (nonatomic, assign, readonly) CGFloat trackRadius;
 
+@property (nonatomic, assign) NSTimeInterval lastTime;
+
 @end
 
 @implementation PJGameScene
@@ -80,6 +82,16 @@
 - (CGFloat)trackRadius
 {
    return CGRectGetWidth(self.frame)*.5;
+}
+
+- (void)update:(NSTimeInterval)currentTime
+{
+   if ( self.lastTime )
+   {
+      NSTimeInterval dt = currentTime - self.lastTime;
+      NSLog(@"dt = %f", dt);
+   }
+   self.lastTime = currentTime;
 }
 
 @end
