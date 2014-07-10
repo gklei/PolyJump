@@ -29,7 +29,7 @@
 		8E11BE72196E23FB00730B6B /* PolyJumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE71196E23FB00730B6B /* PolyJumpTests.m */; };
 		8E11BE7D196E253300730B6B /* PJMainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE7C196E253300730B6B /* PJMainMenuScene.m */; };
 		8E11BE80196E263200730B6B /* PJGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE7F196E263200730B6B /* PJGameScene.m */; };
-		8E11BE83196E266400730B6B /* PJPlayLabelNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE82196E266400730B6B /* PJPlayLabelNode.m */; };
+		8E11BE83196E266400730B6B /* PJButtonLabelNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE82196E266400730B6B /* PJButtonLabelNode.m */; };
 		8E11BE86196E29F700730B6B /* PJTrackNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE85196E29F700730B6B /* PJTrackNode.m */; };
 		8E11BED8196E321100730B6B /* Animation.c in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BEB3196E321100730B6B /* Animation.c */; };
 		8E11BED9196E321100730B6B /* AnimationState.c in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BEB4196E321100730B6B /* AnimationState.c */; };
@@ -118,8 +118,8 @@
 		8E11BE7C196E253300730B6B /* PJMainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJMainMenuScene.m; sourceTree = "<group>"; };
 		8E11BE7E196E263200730B6B /* PJGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJGameScene.h; sourceTree = "<group>"; };
 		8E11BE7F196E263200730B6B /* PJGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJGameScene.m; sourceTree = "<group>"; };
-		8E11BE81196E266400730B6B /* PJPlayLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJPlayLabelNode.h; sourceTree = "<group>"; };
-		8E11BE82196E266400730B6B /* PJPlayLabelNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJPlayLabelNode.m; sourceTree = "<group>"; };
+		8E11BE81196E266400730B6B /* PJButtonLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJButtonLabelNode.h; sourceTree = "<group>"; };
+		8E11BE82196E266400730B6B /* PJButtonLabelNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJButtonLabelNode.m; sourceTree = "<group>"; };
 		8E11BE84196E29F700730B6B /* PJTrackNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJTrackNode.h; sourceTree = "<group>"; };
 		8E11BE85196E29F700730B6B /* PJTrackNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJTrackNode.m; sourceTree = "<group>"; };
 		8E11BE98196E321100730B6B /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
@@ -288,8 +288,8 @@
 				8E11BE7F196E263200730B6B /* PJGameScene.m */,
 				8E11BE84196E29F700730B6B /* PJTrackNode.h */,
 				8E11BE85196E29F700730B6B /* PJTrackNode.m */,
-				8E11BE81196E266400730B6B /* PJPlayLabelNode.h */,
-				8E11BE82196E266400730B6B /* PJPlayLabelNode.m */,
+				8E11BE81196E266400730B6B /* PJButtonLabelNode.h */,
+				8E11BE82196E266400730B6B /* PJButtonLabelNode.m */,
 				8E11BE5C196E23FB00730B6B /* Spaceship.png */,
 				8E11BE5E196E23FB00730B6B /* Images.xcassets */,
 				8E11BE45196E23FB00730B6B /* Supporting Files */,
@@ -578,7 +578,7 @@
 				8E11BF18196E321A00730B6B /* SpineSequence.m in Sources */,
 				8E11BED8196E321100730B6B /* Animation.c in Sources */,
 				8E11BF1D196E321A00730B6B /* DZSpineSceneBuilder.m in Sources */,
-				8E11BE83196E266400730B6B /* PJPlayLabelNode.m in Sources */,
+				8E11BE83196E266400730B6B /* PJButtonLabelNode.m in Sources */,
 				8E11BEDE196E321100730B6B /* AttachmentLoader.c in Sources */,
 				8E11BF13196E321A00730B6B /* spine_adapt.m in Sources */,
 				8E11BEE0196E321100730B6B /* BoneData.c in Sources */,

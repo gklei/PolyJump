@@ -169,9 +169,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 -(void)endGame
 {
    self.scene.view.paused = YES;
-   
-   SKTex
-   
 }
 
 @end
