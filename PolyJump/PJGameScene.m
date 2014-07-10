@@ -11,9 +11,12 @@
 #import "DZSpineSceneBuilder.h"
 #import "SpineSkeleton.h"
 #import "PJBarNode.h"
+#import "PegNode.h"
 
 static CGFloat normalize(CGFloat angle)
 {
+   while(angle<0)
+      angle += 2*M_PI;
    return fmodf(angle, 2*M_PI);
 }
 
@@ -37,6 +40,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) SKNode* ninja;
 @property (nonatomic) SKNode* spineNode;
 
+@property (nonatomic) NSMutableArray* pegNodes;
+
 @end
 
 @implementation PJGameScene
@@ -45,6 +50,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    if (self = [super initWithSize:size])
    {
+      self.pegNodes = [NSMutableArray array];
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
@@ -94,16 +100,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addPeg
 {
-   CGFloat pegRadius = 10;
-   CGRect pegRect = CGRectMake(-pegRadius, -pegRadius, pegRadius*2, pegRadius*2);
-   SKShapeNode* pegNode = [SKShapeNode node];
-   pegNode.path = [UIBezierPath bezierPathWithOvalInRect:pegRect].CGPath;
-   pegNode.fillColor = [UIColor purpleColor];
-   CGFloat angleDegrees = rand() % 360;
-   CGFloat angleRad = (angleDegrees*2*M_PI)/360;
-   pegNode.position = CGPointMake(self.trackCenter.x + self.trackRadius * cos(angleRad),
-                                  self.trackCenter.y + self.trackRadius * sin(angleRad));
+   PegNode* pegNode = [PegNode node];
+   CGFloat angle = rand() % 360;
+   pegNode.position = [PegNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
    [self addChild:pegNode];
+   [self.pegNodes addObject:pegNode];
 }
 
 - (void)setupNinja
@@ -149,10 +150,14 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleStart = normalize(oldBarAngle);
    CGFloat angleEnd   = angleStart + angleDelta;
    
-   CGFloat testAngle = M_PI/4;
-   if ( angleInRange(testAngle, angleStart, angleEnd) )
+   for( PegNode* pegNode in self.pegNodes )
    {
-      NSLog(@"hit %f", testAngle);
+      CGFloat testAngle = normalize([pegNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
+//      NSLog(@"testAngle = %f, comparing with %f, %f", testAngle, angleStart, angleEnd);
+      if ( angleInRange(testAngle, angleStart, angleEnd) )
+      {
+         NSLog(@"hit pegNode %@", pegNode);
+      }
    }
 }
 

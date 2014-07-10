@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		43B5635F196E33EF00D93394 /* PJBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B5635E196E33EF00D93394 /* PJBarNode.m */; };
+		43B56362196E404C00D93394 /* PegNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B56361196E404C00D93394 /* PegNode.m */; };
 		8E11BE3D196E23FB00730B6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3C196E23FB00730B6B /* Foundation.framework */; };
 		8E11BE3F196E23FB00730B6B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */; };
 		8E11BE41196E23FB00730B6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE40196E23FB00730B6B /* UIKit.framework */; };
@@ -87,6 +88,8 @@
 /* Begin PBXFileReference section */
 		43B5635D196E33EF00D93394 /* PJBarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJBarNode.h; sourceTree = "<group>"; };
 		43B5635E196E33EF00D93394 /* PJBarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJBarNode.m; sourceTree = "<group>"; };
+		43B56360196E404C00D93394 /* PegNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PegNode.h; sourceTree = "<group>"; };
+		43B56361196E404C00D93394 /* PegNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PegNode.m; sourceTree = "<group>"; };
 		8E11BE39196E23FB00730B6B /* PolyJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolyJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E11BE3C196E23FB00730B6B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -267,6 +270,8 @@
 				8E11BF35196E3DA600730B6B /* skeleton.atlas */,
 				8E11BF36196E3DA600730B6B /* skeleton.json */,
 				8E11BF37196E3DA600730B6B /* skeleton.png */,
+				43B56360196E404C00D93394 /* PegNode.h */,
+				43B56361196E404C00D93394 /* PegNode.m */,
 				43B5635D196E33EF00D93394 /* PJBarNode.h */,
 				43B5635E196E33EF00D93394 /* PJBarNode.m */,
 				8E11BE4D196E23FB00730B6B /* PJAppDelegate.h */,
@@ -591,6 +596,7 @@
 				8E11BF16196E321A00730B6B /* SpineBone.m in Sources */,
 				8E11BF1B196E321A00730B6B /* SpineTimeline.m in Sources */,
 				8E11BF1F196E321A00730B6B /* DZSpineSceneTrack.m in Sources */,
+				43B56362196E404C00D93394 /* PegNode.m in Sources */,
 				8E11BEE6196E321100730B6B /* RegionAttachment.c in Sources */,
 				8E11BEDD196E321100730B6B /* Attachment.c in Sources */,
 				8E11BEE8196E321100730B6B /* SkeletonBounds.c in Sources */,
