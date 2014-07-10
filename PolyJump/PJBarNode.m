@@ -8,18 +8,41 @@
 
 #import "PJBarNode.h"
 
+@interface PJBarNode()
+
+@property(nonatomic) CGFloat velocity;
+
+@end
+
 @implementation PJBarNode
 
 +(PJBarNode *)nodeWithBarLength:(CGFloat)barLength
 {
-   CGFloat barThickness = 10;
-   CGRect rect = CGRectMake(0, -barThickness, barLength, barThickness);
-   PJBarNode* barNode = [PJBarNode node];
-   barNode.path = [UIBezierPath bezierPathWithRect:rect].CGPath;
-   barNode.fillColor = [SKColor redColor];
-   barNode.lineWidth = 0.0;
-   barNode.zRotation = M_PI_4;
-   return barNode;
+   return [[PJBarNode alloc] initWithBarLength:barLength];
+}
+
+- (instancetype)initWithBarLength:(CGFloat)barLength
+{
+   self = [super init];
+   if (self)
+   {
+      CGFloat barThickness = 10;
+      CGRect rect = CGRectMake(0, -barThickness/2, barLength, barThickness);
+      self.path = [UIBezierPath bezierPathWithRect:rect].CGPath;
+      self.fillColor = [SKColor redColor];
+      self.lineWidth = 0.0;
+      self.zRotation = M_PI_4;
+      
+      self.velocity = 3;
+   }
+   return self;
+}
+
+
+-(void)updateWithDeltaTime:(NSTimeInterval)deltaTime
+{
+   self.zRotation = self.zRotation + self.velocity*deltaTime;
+   self.velocity = MIN(self.velocity*1.0007, 10);
 }
 
 @end

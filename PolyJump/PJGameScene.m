@@ -95,8 +95,9 @@
    if ( self.lastTime )
    {
       NSTimeInterval dt = currentTime - self.lastTime;
-      NSLog(@"dt = %f", dt);
+      [self.barNode updateWithDeltaTime:dt];
    }
+   
    self.lastTime = currentTime;
 }
 
