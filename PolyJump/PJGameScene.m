@@ -92,7 +92,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.barNode];
 }
 
-<<<<<<< HEAD
 - (void)addPeg
 {
    CGFloat pegRadius = 10;
@@ -105,7 +104,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    pegNode.position = CGPointMake(self.trackCenter.x + self.trackRadius * cos(angleRad),
                                   self.trackCenter.y + self.trackRadius * sin(angleRad));
    [self addChild:pegNode];
-=======
+}
+
 - (void)setupNinja
 {
    self.ninjaSkeleton = [DZSpineSceneBuilder loadSkeletonName:@"skeleton" scale:0.5];
@@ -116,7 +116,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.ninja];
    self.spineNode = [_builder nodeWithSkeleton:self.ninjaSkeleton animationName:@"trip" loop:NO];
    [self.ninja addChild:_spineNode];
->>>>>>> 66b8c572bbe02e77972ef40965398c76c383fac5
 }
 
 - (CGPoint)trackCenter
