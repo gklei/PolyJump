@@ -11,6 +11,7 @@
 #import "DZSpineSceneBuilder.h"
 #import "SpineSkeleton.h"
 #import "PJBarNode.h"
+#import "SpineImport.h"
 
 static CGFloat normalize(CGFloat angle)
 {
@@ -31,11 +32,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
-
-@property (nonatomic) SpineSkeleton* ninjaSkeleton;
-@property (nonatomic) DZSpineSceneBuilder* builder;
-@property (nonatomic) SKNode* ninja;
-@property (nonatomic) SKNode* spineNode;
+@property (nonatomic) SGG_Spine* ninja;
 
 @end
 
@@ -50,7 +47,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self setupBar];
 
       // Currently Broken!
-//      [self setupNinja];
+      [self setupNinja];
    }
    return self;
 }
@@ -95,14 +92,25 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)setupNinja
 {
-   self.ninjaSkeleton = [DZSpineSceneBuilder loadSkeletonName:@"skeleton" scale:0.5];
-   self.builder = [DZSpineSceneBuilder builder];
-   self.ninja = [SKNode node];
-   self.ninja.position = CGPointMake(self.size.width/2, 0);
-
+   self.ninja = [SGG_Spine node];
+   [self.ninja skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
+   self.ninja.position = CGPointMake(self.size.width/4, self.size.height/4);
+//   self.ninja.queuedAnimation = @"leftPunch";
+   self.ninja.queueIntro = 0.1;
+//   [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
+   [self.ninja runAnimationSequence:@[@"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch"] andUseQueue:YES];
+   self.ninja.zPosition = 0;
    [self addChild:self.ninja];
-   self.spineNode = [_builder nodeWithSkeleton:self.ninjaSkeleton animationName:@"trip" loop:NO];
-   [self.ninja addChild:_spineNode];
+   /*
+   boy = [SGG_Spine node];
+   [boy skeletonFromFileNamed:@"spineboy" andAtlasNamed:@"spineboy" andUseSkinNamed:Nil];
+   boy.position = CGPointMake(self.size.width/4, self.size.height/4);
+   boy.queuedAnimation = @"walk";
+   boy.queueIntro = 0.1;
+   [boy runAnimation:@"walk" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
+   boy.zPosition = 0;
+   [self addChild:boy];
+    */
 }
 
 - (CGPoint)trackCenter
@@ -125,7 +133,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self.barNode updateWithDeltaTime:dt];
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
    }
-   
+
    self.lastTime = currentTime;
 }
 
