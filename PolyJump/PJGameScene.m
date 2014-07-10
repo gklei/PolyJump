@@ -20,8 +20,7 @@
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
 
-@property (nonatomic) SpineSkeleton* spineSkeleton;
-
+@property (nonatomic) SpineSkeleton* ninjaSkeleton;
 @property (nonatomic) DZSpineSceneBuilder* builder;
 @property (nonatomic) SKNode* ninja;
 @property (nonatomic) SKNode* spineNode;
@@ -37,6 +36,9 @@
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
+
+      // Currently Broken!
+//      [self setupNinja];
    }
    return self;
 }
@@ -77,6 +79,18 @@
    self.barNode.position = self.trackCenter;
    
    [self addChild:self.barNode];
+}
+
+- (void)setupNinja
+{
+   self.ninjaSkeleton = [DZSpineSceneBuilder loadSkeletonName:@"skeleton" scale:0.5];
+   self.builder = [DZSpineSceneBuilder builder];
+   self.ninja = [SKNode node];
+   self.ninja.position = CGPointMake(self.size.width/2, 0);
+
+   [self addChild:self.ninja];
+   self.spineNode = [_builder nodeWithSkeleton:self.ninjaSkeleton animationName:@"trip" loop:NO];
+   [self.ninja addChild:_spineNode];
 }
 
 - (CGPoint)trackCenter
