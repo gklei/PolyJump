@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		43B5635F196E33EF00D93394 /* PJBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B5635E196E33EF00D93394 /* PJBarNode.m */; };
-		43B56362196E404C00D93394 /* PegNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B56361196E404C00D93394 /* PegNode.m */; };
 		8E11BE3D196E23FB00730B6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3C196E23FB00730B6B /* Foundation.framework */; };
 		8E11BE3F196E23FB00730B6B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */; };
 		8E11BE41196E23FB00730B6B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE40196E23FB00730B6B /* UIKit.framework */; };
@@ -57,7 +56,6 @@
 /* Begin PBXFileReference section */
 		43B5635D196E33EF00D93394 /* PJBarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJBarNode.h; sourceTree = "<group>"; };
 		43B5635E196E33EF00D93394 /* PJBarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PJBarNode.m; sourceTree = "<group>"; };
-		43B56361196E404C00D93394 /* PegNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PegNode.m; sourceTree = "<group>"; };
 		8E11BE39196E23FB00730B6B /* PolyJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolyJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E11BE3C196E23FB00730B6B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8E11BE3E196E23FB00730B6B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -360,15 +358,7 @@
 				8E11BF51196E402200730B6B /* SGG_SkinSlot.m in Sources */,
 				8E11BF54196E402200730B6B /* SGG_SpineBone.m in Sources */,
 				43B5635F196E33EF00D93394 /* PJBarNode.m in Sources */,
-				8E11BEEB196E321100730B6B /* Skin.c in Sources */,
-				8E11BF18196E321A00730B6B /* SpineSequence.m in Sources */,
-				8E11BED8196E321100730B6B /* Animation.c in Sources */,
-				8E11BF1D196E321A00730B6B /* DZSpineSceneBuilder.m in Sources */,
 				8E11BE83196E266400730B6B /* PJButtonLabelNode.m in Sources */,
-				8E11BEDE196E321100730B6B /* AttachmentLoader.c in Sources */,
-				8E11BF13196E321A00730B6B /* spine_adapt.m in Sources */,
-				8E11BEE0196E321100730B6B /* BoneData.c in Sources */,
-				8E11BF17196E321A00730B6B /* SpineGeometry.m in Sources */,
 				8E11BE80196E263200730B6B /* PJGameScene.m in Sources */,
 				8E11BE7D196E253300730B6B /* PJMainMenuScene.m in Sources */,
 				8E11BF52196E402200730B6B /* SGG_SkinSprite.m in Sources */,
@@ -377,7 +367,6 @@
 				8E11BF56196E402200730B6B /* SGG_SpineJSONTools.m in Sources */,
 				8E11BF57196E402200730B6B /* SGG_SpineSkin.m in Sources */,
 				8E11BF60196E4A1000730B6B /* PegNode.m in Sources */,
-				43B56362196E404C00D93394 /* PegNode.m in Sources */,
 				8E11BE86196E29F700730B6B /* PJTrackNode.m in Sources */,
 				8E11BE58196E23FB00730B6B /* PJViewController.m in Sources */,
 				8E11BF55196E402200730B6B /* SGG_SpineBoneAction.m in Sources */,
