@@ -10,6 +10,8 @@
 #import "PJBarNode.h"
 #import "SpineImport.h"
 #import "PegNode.h"
+#import "PJButtonLabelNode.h"
+#import "PJMainMenuScene.h"
 
 static CGFloat normalize(CGFloat angle)
 {
@@ -174,6 +176,28 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 -(void)endGame
 {
    self.scene.view.paused = YES;
+   
+   SKSpriteNode* endColorNode = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithWhite:0.9 alpha:0.8] size:self.frame.size];
+   endColorNode.anchorPoint = CGPointMake(0, 0);
+   [self addChild:endColorNode];
+   
+   PJButtonLabelNode* retryButton = [PJButtonLabelNode nodeWithText:@"Retry"];
+   retryButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+   retryButton.touchEndedHandler = ^{
+      self.scene.view.paused = NO;
+      [self.scene.view presentScene:[[PJGameScene alloc] initWithSize:self.frame.size]];
+   };
+   [self addChild:retryButton];
+   
+   PJButtonLabelNode* quitButton = [PJButtonLabelNode nodeWithText:@"Quit"];
+   quitButton.position = CGPointMake(retryButton.position.x, retryButton.position.y - 100);
+   quitButton.touchEndedHandler = ^{
+      self.scene.view.paused = NO;
+      SKScene * scene = [PJMainMenuScene sceneWithSize:self.view.bounds.size];
+      scene.scaleMode = SKSceneScaleModeAspectFill;
+      [self.view presentScene:scene];
+   };
+   [self addChild:quitButton];
 }
 
 @end

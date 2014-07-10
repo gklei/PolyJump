@@ -8,7 +8,7 @@
 
 #import "PJMainMenuScene.h"
 #import "PJGameScene.h"
-#import "PJPlayLabelNode.h"
+#import "PJButtonLabelNode.h"
 
 @implementation PJMainMenuScene
 
@@ -38,7 +38,7 @@
 
 - (void)setupPlayLabel
 {
-   PJPlayLabelNode* playLabel = [PJPlayLabelNode playLabelNode];
+   PJButtonLabelNode* playLabel = [PJButtonLabelNode nodeWithText:@"Play"];
    playLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame)*.25);
    playLabel.touchEndedHandler = ^{
       [self.scene.view presentScene:[[PJGameScene alloc] initWithSize:self.frame.size]

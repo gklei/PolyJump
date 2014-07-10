@@ -8,9 +8,9 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface PJPlayLabelNode : SKLabelNode
+@interface PJButtonLabelNode : SKLabelNode
 
-+ (instancetype)playLabelNode;
++ (instancetype)nodeWithText:(NSString *)text;
 
 @property (nonatomic) SKScene* destinationScene;
 @property (nonatomic, copy) dispatch_block_t touchEndedHandler;

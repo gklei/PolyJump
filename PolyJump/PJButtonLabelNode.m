@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 Free the Robots. All rights reserved.
 //
 
-#import "PJPlayLabelNode.h"
+#import "PJButtonLabelNode.h"
 
-@implementation PJPlayLabelNode
+@implementation PJButtonLabelNode
 
-+ (instancetype)playLabelNode
++ (instancetype)nodeWithText:(NSString *)text
 {
-   PJPlayLabelNode* playLabelNode = [PJPlayLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   PJButtonLabelNode* playLabelNode = [PJButtonLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
    playLabelNode.fontSize = 24;
    playLabelNode.fontColor = [SKColor blackColor];
-   playLabelNode.text = @"Play!";
+   playLabelNode.text = text;
    playLabelNode.userInteractionEnabled = YES;
 
    return playLabelNode;
