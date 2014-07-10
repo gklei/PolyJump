@@ -14,6 +14,8 @@
 @property (nonatomic, assign, readonly) CGPoint trackCenter;
 @property (nonatomic, assign, readonly) CGFloat trackRadius;
 
+@property (nonatomic, assign) NSTimeInterval lastTime;
+
 @end
 
 @implementation PJGameScene
@@ -24,6 +26,7 @@
    {
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
+      [self setupBar];
    }
    return self;
 }
@@ -58,6 +61,19 @@
    [self addChild:track];
 }
 
+- (void)setupBar
+{
+   CGFloat barThickness = 10;
+   CGRect rect = CGRectMake(0, -barThickness, self.trackRadius, barThickness);
+   SKShapeNode* barNode = [SKShapeNode node];
+   barNode.path = [UIBezierPath bezierPathWithRect:rect].CGPath;
+   barNode.fillColor = [SKColor redColor];
+   barNode.lineWidth = 0.0;
+   barNode.position = self.trackCenter;
+   barNode.zRotation = M_PI_4;
+   [self addChild:barNode];
+}
+
 - (CGPoint)trackCenter
 {
    CGFloat padding = 20;
@@ -67,6 +83,16 @@
 - (CGFloat)trackRadius
 {
    return CGRectGetWidth(self.frame)*.5;
+}
+
+- (void)update:(NSTimeInterval)currentTime
+{
+   if ( self.lastTime )
+   {
+      NSTimeInterval dt = currentTime - self.lastTime;
+      NSLog(@"dt = %f", dt);
+   }
+   self.lastTime = currentTime;
 }
 
 @end
