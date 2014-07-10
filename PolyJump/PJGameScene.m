@@ -53,7 +53,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self addPeg];
       [self addPeg];
       [self addPeg];
-      // Currently Broken!
+
       [self setupNinja];
    }
    return self;
@@ -112,20 +112,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    self.ninja.position = CGPointMake(self.size.width/4, self.size.height/4);
 //   self.ninja.queuedAnimation = @"leftPunch";
    self.ninja.queueIntro = 0.1;
-//   [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
-   [self.ninja runAnimationSequence:@[@"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch"] andUseQueue:YES];
+   [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
+//   [self.ninja runAnimationSequence:@[@"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch"] andUseQueue:NO];
    self.ninja.zPosition = 0;
    [self addChild:self.ninja];
-   /*
-   boy = [SGG_Spine node];
-   [boy skeletonFromFileNamed:@"spineboy" andAtlasNamed:@"spineboy" andUseSkinNamed:Nil];
-   boy.position = CGPointMake(self.size.width/4, self.size.height/4);
-   boy.queuedAnimation = @"walk";
-   boy.queueIntro = 0.1;
-   [boy runAnimation:@"walk" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
-   boy.zPosition = 0;
-   [self addChild:boy];
-    */
 }
 
 - (CGPoint)trackCenter
@@ -149,6 +139,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
    }
 
+   [self.ninja activateAnimations];
+
    self.lastTime = currentTime;
 }
 
@@ -167,7 +159,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
          self.numHitPegs = self.numHitPegs + 1;
       }
    }];
-   
    
    if ( self.numHitPegs > 3 )
       [self endGame];
