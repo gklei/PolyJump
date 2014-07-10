@@ -40,8 +40,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) SKNode* ninja;
 @property (nonatomic) SKNode* spineNode;
 
-@property (nonatomic) NSMutableArray* pegNodes;
-
 @end
 
 @implementation PJGameScene
@@ -50,7 +48,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    if (self = [super initWithSize:size])
    {
-      self.pegNodes = [NSMutableArray array];
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
@@ -103,8 +100,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    PegNode* pegNode = [PegNode node];
    CGFloat angle = rand() % 360;
    pegNode.position = [PegNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
+   pegNode.name = @"enemy";
    [self addChild:pegNode];
-   [self.pegNodes addObject:pegNode];
 }
 
 - (void)setupNinja
@@ -145,20 +142,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 -(void)hitTestWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
 {
-#pragma warning Test against the players
    CGFloat angleDelta = newBarAngle - oldBarAngle;
    CGFloat angleStart = normalize(oldBarAngle);
    CGFloat angleEnd   = angleStart + angleDelta;
    
-   for( PegNode* pegNode in self.pegNodes )
-   {
+   [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
+      PegNode* pegNode = (PegNode *)node;
       CGFloat testAngle = normalize([pegNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
-//      NSLog(@"testAngle = %f, comparing with %f, %f", testAngle, angleStart, angleEnd);
       if ( angleInRange(testAngle, angleStart, angleEnd) )
       {
          NSLog(@"hit pegNode %@", pegNode);
       }
-   }
+   }];
 }
 
 @end
