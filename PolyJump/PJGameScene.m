@@ -40,6 +40,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) SKNode* ninja;
 @property (nonatomic) SKNode* spineNode;
 
+@property (nonatomic) NSInteger numHitPegs;
+
 @end
 
 @implementation PJGameScene
@@ -51,6 +53,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
+      [self addPeg];
+      [self addPeg];
+      [self addPeg];
       [self addPeg];
       // Currently Broken!
 //      [self setupNinja];
@@ -151,9 +156,22 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       CGFloat testAngle = normalize([pegNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
       if ( angleInRange(testAngle, angleStart, angleEnd) )
       {
-         NSLog(@"hit pegNode %@", pegNode);
+//         NSLog(@"hit pegNode %@", pegNode);
+         self.numHitPegs = self.numHitPegs + 1;
       }
    }];
+   
+   
+   if ( self.numHitPegs > 3 )
+      [self endGame];
+}
+
+-(void)endGame
+{
+   self.scene.view.paused = YES;
+   
+   SKTex
+   
 }
 
 @end
