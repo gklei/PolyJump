@@ -20,11 +20,8 @@
 //    skView.showsFPS = YES;
 //    skView.showsNodeCount = YES;
 
-    // Create and configure the scene.
     SKScene * scene = [PJMainMenuScene sceneWithSize:skView.bounds.size];
     scene.scaleMode = SKSceneScaleModeAspectFill;
-    
-    // Present the scene.
     [skView presentScene:scene];
 }
 
