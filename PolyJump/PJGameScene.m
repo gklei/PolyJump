@@ -123,6 +123,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    for( AIPlayerNode* aiPlayerNode in aiPlayerNodesToAdd)
    {
       [self addChild:aiPlayerNode];
+      aiPlayerNode.alpha = 0;
+      [aiPlayerNode runAction:[SKAction fadeInWithDuration:0.3]];
       [self queuePlayerNodeForPlaying:aiPlayerNode];
    }
 }
