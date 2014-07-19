@@ -1,6 +1,15 @@
-Don't load any spine models during game play (load up front)
-Handle pausing
-Gamecenter support
+More Gameplay Features
+- Scroll to new stage every once in a while????
+
+Visual Polish:
+- Particle effects when the bar gets hit
+
+Optimization:
+- Don't load any spine models during game play (load up front)
+
+Finishing Touches:
+- Handle pausing
+- Gamecenter support
 
 Game balance
 - Run AI on a different (less frequent?) timer to scale difficulty
