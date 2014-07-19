@@ -1,5 +1,5 @@
 //
-//  PegNode.h
+//  PlayerNode.h
 //  PolyJump
 //
 //  Created by David Cheng on 7/9/14.
@@ -8,9 +8,9 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface PegNode : SKShapeNode
+@interface PlayerNode : SKShapeNode
 
-+(PegNode *)node;
++(PlayerNode *)node;
 
 +(CGPoint)positionWithCenter:(CGPoint)center
                       radius:(CGFloat)radius

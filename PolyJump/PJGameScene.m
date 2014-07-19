@@ -9,7 +9,7 @@
 #import "PJGameScene.h"
 #import "PJBarNode.h"
 #import "SpineImport.h"
-#import "PegNode.h"
+#import "PlayerNode.h"
 #import "PJButtonLabelNode.h"
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
@@ -92,7 +92,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
    self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
                          {
-                            [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+                            NSLog(@"tap");
                          }];
 
    self.leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
@@ -162,11 +162,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addPeg
 {
-   PegNode* pegNode = [PegNode node];
+   PlayerNode* playerNode = [PlayerNode node];
    CGFloat angle = rand() % 360;
-   pegNode.position = [PegNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
-   pegNode.name = @"enemy";
-   [self addChild:pegNode];
+   playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
+   playerNode.name = @"enemy";
+   [self addChild:playerNode];
 }
 
 - (void)setupNinja
@@ -218,11 +218,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleEnd   = angleStart + angleDelta;
    
    [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
-      PegNode* pegNode = (PegNode *)node;
-      CGFloat testAngle = normalize([pegNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
+      PlayerNode* playerNode = (PlayerNode *)node;
+      CGFloat testAngle = normalize([playerNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
       if ( angleInRange(testAngle, angleStart, angleEnd) )
       {
-//         NSLog(@"hit pegNode %@", pegNode);
+//         NSLog(@"hit playerNode %@", playerNode);
          self.numHitPegs = self.numHitPegs + 1;
       }
    }];

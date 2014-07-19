@@ -39,7 +39,7 @@
 		8E11BF5B196E44B300730B6B /* skeleton.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF58196E44B300730B6B /* skeleton.atlas */; };
 		8E11BF5C196E44B300730B6B /* skeleton.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF59196E44B300730B6B /* skeleton.json */; };
 		8E11BF5D196E44B300730B6B /* skeleton.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BF5A196E44B300730B6B /* skeleton.png */; };
-		8E11BF60196E4A1000730B6B /* PegNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF5F196E4A1000730B6B /* PegNode.m */; };
+		8E11BF60196E4A1000730B6B /* PlayerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BF5F196E4A1000730B6B /* PlayerNode.m */; };
 		AD31AFAC642E4174AFD3E286 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E12313C6EF461F8056BEB1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -105,8 +105,8 @@
 		8E11BF58196E44B300730B6B /* skeleton.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = skeleton.atlas; sourceTree = "<group>"; };
 		8E11BF59196E44B300730B6B /* skeleton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = skeleton.json; sourceTree = "<group>"; };
 		8E11BF5A196E44B300730B6B /* skeleton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skeleton.png; sourceTree = "<group>"; };
-		8E11BF5E196E4A1000730B6B /* PegNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PegNode.h; sourceTree = "<group>"; };
-		8E11BF5F196E4A1000730B6B /* PegNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PegNode.m; sourceTree = "<group>"; };
+		8E11BF5E196E4A1000730B6B /* PlayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerNode.h; sourceTree = "<group>"; };
+		8E11BF5F196E4A1000730B6B /* PlayerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerNode.m; sourceTree = "<group>"; };
 		E0115D54BCD74FBEB72CEDE3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,8 +173,8 @@
 		4376B62F1979FF1E00D8F0A7 /* Game Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				8E11BF5E196E4A1000730B6B /* PegNode.h */,
-				8E11BF5F196E4A1000730B6B /* PegNode.m */,
+				8E11BF5E196E4A1000730B6B /* PlayerNode.h */,
+				8E11BF5F196E4A1000730B6B /* PlayerNode.m */,
 				43B5635D196E33EF00D93394 /* PJBarNode.h */,
 				43B5635E196E33EF00D93394 /* PJBarNode.m */,
 				8E11BE84196E29F700730B6B /* PJTrackNode.h */,
@@ -441,7 +441,7 @@
 				8E11BE4F196E23FB00730B6B /* PJAppDelegate.m in Sources */,
 				8E11BF56196E402200730B6B /* SGG_SpineJSONTools.m in Sources */,
 				8E11BF57196E402200730B6B /* SGG_SpineSkin.m in Sources */,
-				8E11BF60196E4A1000730B6B /* PegNode.m in Sources */,
+				8E11BF60196E4A1000730B6B /* PlayerNode.m in Sources */,
 				8E11BE86196E29F700730B6B /* PJTrackNode.m in Sources */,
 				8E11BE58196E23FB00730B6B /* PJViewController.m in Sources */,
 				8E11BF55196E402200730B6B /* SGG_SpineBoneAction.m in Sources */,

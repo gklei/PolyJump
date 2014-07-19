@@ -1,18 +1,18 @@
 //
-//  PegNode.m
+//  PlayerNode.m
 //  PolyJump
 //
 //  Created by David Cheng on 7/9/14.
 //  Copyright (c) 2014 Free the Robots. All rights reserved.
 //
 
-#import "PegNode.h"
+#import "PlayerNode.h"
 
-@implementation PegNode
+@implementation PlayerNode
 
-+(PegNode *)node
++(PlayerNode *)node
 {
-   return [[PegNode alloc] init];
+   return [[PlayerNode alloc] init];
 }
 
 - (instancetype)init
