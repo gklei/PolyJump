@@ -18,7 +18,6 @@
 		8E11BE52196E23FB00730B6B /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BE50196E23FB00730B6B /* Main_iPhone.storyboard */; };
 		8E11BE55196E23FB00730B6B /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BE53196E23FB00730B6B /* Main_iPad.storyboard */; };
 		8E11BE58196E23FB00730B6B /* PJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE57196E23FB00730B6B /* PJViewController.m */; };
-		8E11BE5B196E23FB00730B6B /* PJMyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E11BE5A196E23FB00730B6B /* PJMyScene.m */; };
 		8E11BE5D196E23FB00730B6B /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BE5C196E23FB00730B6B /* Spaceship.png */; };
 		8E11BE5F196E23FB00730B6B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E11BE5E196E23FB00730B6B /* Images.xcassets */; };
 		8E11BE66196E23FB00730B6B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E11BE65196E23FB00730B6B /* XCTest.framework */; };
@@ -73,8 +72,6 @@
 		8E11BE54196E23FB00730B6B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		8E11BE56196E23FB00730B6B /* PJViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJViewController.h; sourceTree = "<group>"; };
 		8E11BE57196E23FB00730B6B /* PJViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJViewController.m; sourceTree = "<group>"; };
-		8E11BE59196E23FB00730B6B /* PJMyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJMyScene.h; sourceTree = "<group>"; };
-		8E11BE5A196E23FB00730B6B /* PJMyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJMyScene.m; sourceTree = "<group>"; };
 		8E11BE5C196E23FB00730B6B /* Spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spaceship.png; sourceTree = "<group>"; };
 		8E11BE5E196E23FB00730B6B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8E11BE64196E23FB00730B6B /* PolyJumpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PolyJumpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,8 +153,6 @@
 		4376B62D1979FEFD00D8F0A7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				8E11BE59196E23FB00730B6B /* PJMyScene.h */,
-				8E11BE5A196E23FB00730B6B /* PJMyScene.m */,
 				8E11BE7B196E253300730B6B /* PJMainMenuScene.h */,
 				8E11BE7C196E253300730B6B /* PJMainMenuScene.m */,
 				8E11BE7E196E263200730B6B /* PJGameScene.h */,
@@ -443,7 +438,6 @@
 				8E11BE80196E263200730B6B /* PJGameScene.m in Sources */,
 				8E11BE7D196E253300730B6B /* PJMainMenuScene.m in Sources */,
 				8E11BF52196E402200730B6B /* SGG_SkinSprite.m in Sources */,
-				8E11BE5B196E23FB00730B6B /* PJMyScene.m in Sources */,
 				8E11BE4F196E23FB00730B6B /* PJAppDelegate.m in Sources */,
 				8E11BF56196E402200730B6B /* SGG_SpineJSONTools.m in Sources */,
 				8E11BF57196E402200730B6B /* SGG_SpineSkin.m in Sources */,
