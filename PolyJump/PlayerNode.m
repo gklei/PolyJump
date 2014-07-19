@@ -67,17 +67,33 @@
    jumpDownAction.timingMode = SKActionTimingEaseIn;
    
    SKAction* jumpAction = [SKAction sequence:@[jumpUpAction, jumpDownAction]];
-   [self.spineNode runAction:jumpAction];
+   
+   self.state = PlayerStateJumping;
+   [self.spineNode runAction:jumpAction completion:^{
+      self.state = PlayerStateIdle;
+   }];
 }
 
 - (void)punchLeft
 {
    [self.spineNode runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+   
+   self.state = PlayerStatePunchingLeft;
+   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [self.spineNode resetSkeleton];
+      self.state = PlayerStateIdle;
+   });
 }
 
 - (void)punchRight
 {
    [self.spineNode runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+
+   self.state = PlayerStatePunchingRight;
+   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [self.spineNode resetSkeleton];
+      self.state = PlayerStateIdle;
+   });
 }
 
 - (void)update

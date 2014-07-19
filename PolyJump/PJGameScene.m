@@ -167,8 +167,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleOnTrackDegrees);
    playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
    playerNode.name = @"enemy";
-   
-//   CGFloat playerRotation = angleOnTrack;
    playerNode.zRotation = angleOnTrackRadians + M_PI/2;
    [self addChild:playerNode];
 }
@@ -263,24 +261,5 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    };
    [self addChild:quitButton];
 }
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-//   NSLog(@"touchesBegan");
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-}
-
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-}
-
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-}
-
-
 
 @end
