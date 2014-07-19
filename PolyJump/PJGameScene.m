@@ -181,12 +181,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
 }
 
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-   return YES;
-}
-
 - (void)addGestureRecognizersToView:(SKView *)view
 {
    self.leftSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
@@ -208,11 +202,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       }
    }];
 
-   self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
-                         {
-                            NSLog(@"tap");
-                         }];
-
    self.leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
    self.rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
    self.upSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
@@ -220,12 +209,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    self.leftSwipeRecognizer.delegate = self;
    self.rightSwipeRecognizer.delegate = self;
    self.upSwipeRecognizer.delegate = self;
-   self.tapRecognizer.delegate = self;
 
    [view addGestureRecognizer:self.leftSwipeRecognizer];
    [view addGestureRecognizer:self.rightSwipeRecognizer];
    [view addGestureRecognizer:self.upSwipeRecognizer];
-   [view addGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)removeGestureRecognizers
@@ -233,7 +220,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self.view removeGestureRecognizer:self.leftSwipeRecognizer];
    [self.view removeGestureRecognizer:self.rightSwipeRecognizer];
    [self.view removeGestureRecognizer:self.upSwipeRecognizer];
-   [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -260,7 +246,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    self.barNode = [PJBarNode nodeWithBarLength:self.trackRadius];
    self.barNode.position = self.trackCenter;
-   
    [self addChild:self.barNode];
 }
 
@@ -277,7 +262,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    self.controlledPlayerNode = [PlayerNode node];
    [self preparePlayerNode:self.controlledPlayerNode atAngleInDegrees:270];
-   
    [self addChild:self.controlledPlayerNode];
 }
 
@@ -317,6 +301,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
    return ret;
 }
+
+#pragma mark -
 
 - (void)update:(NSTimeInterval)currentTime
 {
