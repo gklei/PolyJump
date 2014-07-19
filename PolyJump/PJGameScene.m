@@ -28,8 +28,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    
 }
 
-@interface PJGameScene ()
+@interface PJGameScene () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, assign, readonly) CGPoint ninjaCenter;
 @property (nonatomic, assign, readonly) CGPoint trackCenter;
 @property (nonatomic, assign, readonly) CGFloat trackRadius;
 
@@ -37,6 +38,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) PJBarNode* barNode;
 @property (nonatomic) SGG_Spine* ninja;
 @property (nonatomic) UITapGestureRecognizer* tapRecognizer;
+@property (nonatomic) UISwipeGestureRecognizer* leftSwipeRecognizer;
+@property (nonatomic) UISwipeGestureRecognizer* rightSwipeRecognizer;
+@property (nonatomic) UISwipeGestureRecognizer* upSwipeRecognizer;
 @property (nonatomic) NSInteger numHitPegs;
 
 @end
@@ -60,20 +64,45 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    return self;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+   return YES;
+}
+
 - (void)addGestureRecognizersToView:(SKView *)view
 {
+   self.leftSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+      [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+   }];
+
+   self.rightSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+      [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+   }];
+   
+   self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+      NSLog(@"up");
+//      [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+   }];
+
+   self.leftSwipeRecognizer.delegate = self;
+   self.rightSwipeRecognizer.delegate = self;
+   self.upSwipeRecognizer.delegate = self;
    self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
                          {
-                            NSLog(@"tap!");
-                            [self.ninja activateAnimations];
+                            [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
                          }];
 
+   [view addGestureRecognizer:self.leftSwipeRecognizer];
+   [view addGestureRecognizer:self.rightSwipeRecognizer];
+   [view addGestureRecognizer:self.upSwipeRecognizer];
    [view addGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)removeGestureRecognizers
 {
-   [self.view removeGestureRecognizer:self.tapRecognizer];
+   [self.view removeGestureRecognizer:self.leftSwipeRecognizer];
+   [self.view removeGestureRecognizer:self.rightSwipeRecognizer];
+   [self.view removeGestureRecognizer:self.upSwipeRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -131,13 +160,16 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    self.ninja = [SGG_Spine node];
    [self.ninja skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
-   self.ninja.position = CGPointMake(self.size.width/4, self.size.height/4);
-//   self.ninja.queuedAnimation = @"leftPunch";
-   self.ninja.queueIntro = 0.1;
-   [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.1 andUseQueue:YES];
-//   [self.ninja runAnimationSequence:@[@"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch", @"leftPunch", @"rightPunch"] andUseQueue:NO];
+   self.ninja.position = self.ninjaCenter;
    self.ninja.zPosition = 0;
+   self.ninja.xScale = 0.4;
+   self.ninja.yScale = 0.4;
    [self addChild:self.ninja];
+}
+
+- (CGPoint)ninjaCenter
+{
+   return CGPointMake(self.trackCenter.x, self.trackCenter.y - self.trackRadius);
 }
 
 - (CGPoint)trackCenter
@@ -182,8 +214,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       }
    }];
    
-   if ( self.numHitPegs > 3 )
-      [self endGame];
+//   if ( self.numHitPegs > 3 )
+//      [self endGame];
 }
 
 -(void)endGame
@@ -213,5 +245,24 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    };
    [self addChild:quitButton];
 }
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+//   NSLog(@"touchesBegan");
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+}
+
+
 
 @end

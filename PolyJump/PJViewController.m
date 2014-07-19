@@ -8,6 +8,7 @@
 
 #import "PJViewController.h"
 #import "PJMainMenuScene.h"
+#import "PJGameScene.h"
 
 @implementation PJViewController
 
@@ -20,9 +21,11 @@
 //    skView.showsFPS = YES;
 //    skView.showsNodeCount = YES;
 
-    SKScene * scene = [PJMainMenuScene sceneWithSize:skView.bounds.size];
-    scene.scaleMode = SKSceneScaleModeAspectFill;
-    [skView presentScene:scene];
+//    SKScene * scene = [PJMainMenuScene sceneWithSize:skView.bounds.size];
+//    scene.scaleMode = SKSceneScaleModeAspectFill;
+//    [skView presentScene:scene];
+   
+   [skView presentScene:[PJGameScene sceneWithSize:skView.bounds.size]];
 }
 
 - (BOOL)shouldAutorotate
