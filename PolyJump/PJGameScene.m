@@ -58,6 +58,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @property (nonatomic) NSInteger currentLevelNumber;
 @property (nonatomic) BOOL settingUpNextLevel;
+
+@property (nonatomic) BOOL isPlaying;
+
 @end
 
 @implementation PJGameScene
@@ -67,14 +70,29 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    if (self = [super initWithSize:size])
    {
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
+      
+      [self setupInstructions];
       [self setupTrack];
       [self setupBar];
       [self setupNinja];
       
       self.currentLevelNumber = 1;
-      [self setupLevel:self.currentLevelNumber];
+//      [self setupLevel:self.currentLevelNumber];
+      
+      self.isPlaying = NO;
    }
    return self;
+}
+
+- (void)setupInstructions
+{
+   SKLabelNode* labelNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   labelNode.fontSize = 24;
+   labelNode.fontColor = [SKColor blackColor];
+   labelNode.text = @"Swipe up to play";
+   labelNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 100);
+   labelNode.name = @"instructions";
+   [self addChild:labelNode];
 }
 
 - (void)setupLevel:(NSInteger)levelNumber
@@ -122,19 +140,40 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    // After 3 seconds, position back on the track
    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       
-      CGFloat angleOnTrackRadians = normalize([playerNode angleWithCenter:self.trackCenter]);
-      CGPoint trackPosition = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
-      
-      SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
-      SKAction* jumpDownAction = [SKAction moveTo:trackPosition duration:0.2];
-      jumpUpAction.timingMode = SKActionTimingEaseOut;
-      jumpDownAction.timingMode = SKActionTimingEaseIn;
-      [playerNode runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:^{
-         
-         playerNode.name = s_inGamePlayerName;
-      }];
+      [self playPlayerNode:playerNode];
    });
 }
+
+- (void)playPlayerNode:(PlayerNode *)playerNode
+{
+   CGFloat angleOnTrackRadians = normalize([playerNode angleWithCenter:self.trackCenter]);
+   CGPoint trackPosition = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
+   
+   SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
+   SKAction* jumpDownAction = [SKAction moveTo:trackPosition duration:0.2];
+   jumpUpAction.timingMode = SKActionTimingEaseOut;
+   jumpDownAction.timingMode = SKActionTimingEaseIn;
+   [playerNode runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:^{
+      
+      playerNode.name = s_inGamePlayerName;
+   }];
+}
+
+- (void)startGame
+{
+   self.isPlaying = YES;
+   
+   self.barNode.isAccelerating = YES;
+   
+   [[self childNodeWithName:@"instructions"] removeFromParent];
+   
+   [self enumerateChildNodesWithName:s_preparingPlayerName usingBlock:^(SKNode *node, BOOL *stop) {
+      PlayerNode* playerNode = (PlayerNode *)node;
+      [self playPlayerNode:playerNode];
+      [playerNode updateAnimations];
+   }];
+}
+
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
@@ -152,7 +191,14 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
    
    self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      [self.controlledPlayerNode jump];
+      if ( self.isPlaying )
+      {
+         [self.controlledPlayerNode jump];
+      }
+      else
+      {
+         [self startGame];
+      }
    }];
 
    self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
@@ -186,20 +232,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)didMoveToView:(SKView *)view
 {
    [self addGestureRecognizersToView:view];
-}
-
-- (void)setupMainLabel
-{
-   self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1.0];
-
-   SKLabelNode *mainLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
-
-   mainLabel.fontColor = [SKColor blackColor];
-   mainLabel.text = @"GAME";
-   mainLabel.fontSize = 30;
-   mainLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
-
-   [self addChild:mainLabel];
 }
 
 - (void)setupTrack
@@ -240,7 +272,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self preparePlayerNode:self.controlledPlayerNode atAngleInDegrees:270];
    
    [self addChild:self.controlledPlayerNode];
-   [self queuePlayerNodeForPlaying:self.controlledPlayerNode];
 }
 
 #pragma mark - Property Overrides
@@ -292,11 +323,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       CGFloat newBarAngle = self.barNode.zRotation;
       
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
-      
       [self updateDecisionsWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
+      [self checkForEndGame];
    }
    
-   [self checkForEndGame];
 
    self.lastTime = currentTime;
 }
@@ -365,6 +395,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 -(void)checkForEndGame
 {
+   if ( !self.isPlaying )
+      return;
+   
    if ( self.controlledPlayerNode.state == PlayerStateDead )
    {
       [self endGame:NO];

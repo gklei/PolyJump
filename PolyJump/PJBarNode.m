@@ -32,6 +32,7 @@
       self.fillColor = [SKColor redColor];
       self.lineWidth = 0.0;
       self.zRotation = -M_PI/4;
+      self.isAccelerating = NO;
       
       self.velocity = 3;
    }
@@ -42,7 +43,8 @@
 -(void)updateWithDeltaTime:(NSTimeInterval)deltaTime
 {
    self.zRotation = self.zRotation + self.velocity*deltaTime;
-   self.velocity = MIN(self.velocity*1.0005, 8);
+   if ( self.isAccelerating )
+      self.velocity = MIN(self.velocity*1.0005, 8);
 }
 
 -(void)reverseDirection

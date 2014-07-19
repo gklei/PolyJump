@@ -10,6 +10,8 @@
 
 @interface PJBarNode : SKShapeNode
 
+@property(nonatomic) BOOL isAccelerating;
+
 +(PJBarNode *)nodeWithBarLength:(CGFloat)barLength;
 
 -(void)updateWithDeltaTime:(NSTimeInterval)deltaTime;
