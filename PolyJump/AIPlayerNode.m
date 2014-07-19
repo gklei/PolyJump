@@ -42,12 +42,20 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    return [[AIPlayerNode alloc] init];
 }
 
+- (BOOL)shouldMakeDecision
+{
+   int makeDecisionPercentage = MIN(30, self.difficulty * 100);
+   return rand() % 100 < makeDecisionPercentage;
+}
 
 - (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle
                            newBarAngle:(CGFloat)newBarAngle
                            trackCenter:(CGPoint)trackCenter
                            trackRadius:(CGFloat)trackRadius
 {
+   if ( ![self shouldMakeDecision] )
+      return;
+   
    CGFloat angleOnTrack = normalize([self angleWithCenter:trackCenter]);
    CGFloat deltaBarAngle = newBarAngle - oldBarAngle;
    CGFloat barDirectionMultiplier = deltaBarAngle > 0 ? 1 : -1;
