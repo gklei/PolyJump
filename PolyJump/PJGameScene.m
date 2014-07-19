@@ -50,6 +50,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) UISwipeGestureRecognizer* upSwipeRecognizer;
 
 @property (nonatomic) NSInteger numHitPegs;
+@property (nonatomic) NSInteger numEnemiesLeft;
 
 @end
 
@@ -180,6 +181,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.controlledPlayerNode];
 }
 
+#pragma mark - Property Overrides
 - (CGPoint)ninjaCenter
 {
    return CGPointMake(self.trackCenter.x, self.trackCenter.y - self.trackRadius);
@@ -196,6 +198,17 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    return CGRectGetWidth(self.frame)*.5 - 25;
 }
 
+- (NSInteger)numEnemiesLeft
+{
+   __block int enemiesLeft = 0;
+   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+      if ( node != self.controlledPlayerNode )
+         enemiesLeft++;
+   }];
+   return enemiesLeft;
+}
+
+
 - (void)update:(NSTimeInterval)currentTime
 {
    [self updatePlayers];
@@ -211,6 +224,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       
       [self updateDecisionsWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
    }
+   
+   [self checkForEndGame];
 
    self.lastTime = currentTime;
 }
@@ -259,6 +274,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
          {
             if ( !playerNode.invincible )
             {
+               playerNode.state = PlayerStateDead;
                [playerNode removeFromParent];
                self.numHitPegs = self.numHitPegs + 1;
             }
@@ -270,17 +286,34 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 //      [self endGame];
 }
 
--(void)endGame
+-(void)checkForEndGame
+{
+   if ( self.controlledPlayerNode.state == PlayerStateDead )
+   {
+      [self endGame:NO];
+   }
+   
+   
+   if ( self.numEnemiesLeft == 0 )
+   {
+      [self endGame:YES];
+   }
+}
+
+
+-(void)endGame:(BOOL)win
 {
    self.scene.view.paused = YES;
    [self removeGestureRecognizers];
    
    SKSpriteNode* endColorNode = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithWhite:0.9 alpha:0.8] size:self.frame.size];
    endColorNode.anchorPoint = CGPointMake(0, 0);
+   endColorNode.zPosition = 1;
    [self addChild:endColorNode];
    
    PJButtonLabelNode* retryButton = [PJButtonLabelNode nodeWithText:@"Retry"];
    retryButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+   retryButton.zPosition = 2;
    retryButton.touchEndedHandler = ^{
       self.scene.view.paused = NO;
       [self.scene.view presentScene:[[PJGameScene alloc] initWithSize:self.frame.size]];
@@ -289,6 +322,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    
    PJButtonLabelNode* quitButton = [PJButtonLabelNode nodeWithText:@"Quit"];
    quitButton.position = CGPointMake(retryButton.position.x, retryButton.position.y - 100);
+   quitButton.zPosition = 2;
    quitButton.touchEndedHandler = ^{
       self.scene.view.paused = NO;
       SKScene * scene = [PJMainMenuScene sceneWithSize:self.view.bounds.size];

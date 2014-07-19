@@ -13,6 +13,7 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
    PlayerStateJumping = 1,
    PlayerStatePunchingLeft = 2,
    PlayerStatePunchingRight = 3,
+   PlayerStateDead = 4,
 };
 
 @interface PlayerNode : SKNode
