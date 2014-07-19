@@ -15,6 +15,9 @@
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
 
+static NSString* s_inGamePlayerName = @"player";
+static NSString* s_preparingPlayerName = @"preparingPlayer";
+
 static CGFloat radiansFromDegrees(CGFloat degrees)
 {
    return (degrees*2*M_PI)/360;
@@ -110,7 +113,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleInDegrees);
    playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.preparingTrackRadius angle:angleOnTrackRadians];
-   playerNode.name = @"preparingPlayer";
+   playerNode.name = s_preparingPlayerName;
    playerNode.zRotation = angleOnTrackRadians + M_PI/2;
 }
 
@@ -128,7 +131,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       jumpDownAction.timingMode = SKActionTimingEaseIn;
       [playerNode runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:^{
          
-         playerNode.name = @"player";
+         playerNode.name = s_inGamePlayerName;
       }];
    });
 }
@@ -260,7 +263,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (NSInteger)numEnemiesLeft
 {
    __block int enemiesLeft = 0;
-   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:s_inGamePlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       if ( node != self.controlledPlayerNode )
          enemiesLeft++;
    }];
@@ -270,7 +273,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (NSInteger)numPreparingEnemies
 {
    __block int ret = 0;
-   [self enumerateChildNodesWithName:@"preparingPlayer" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:s_preparingPlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       if ( node != self.controlledPlayerNode )
          ret++;
    }];
@@ -300,15 +303,21 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)updatePlayers
 {
-   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:s_inGamePlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       PlayerNode* playerNode = (PlayerNode *)node;
       [playerNode updateAnimations];
    }];
+   
+   [self enumerateChildNodesWithName:s_preparingPlayerName usingBlock:^(SKNode *node, BOOL *stop) {
+      PlayerNode* playerNode = (PlayerNode *)node;
+      [playerNode updateAnimations];
+   }];
+
 }
 
 - (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
 {
-   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:s_inGamePlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       PlayerNode* playerNode = (PlayerNode *)node;
       [playerNode updateDecisionsWithOldBarAngle:oldBarAngle
                                      newBarAngle:newBarAngle
@@ -323,7 +332,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleStart = normalize(oldBarAngle);
    CGFloat angleEnd   = angleStart + angleDelta;
    
-   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:s_inGamePlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       
       PlayerNode* playerNode = (PlayerNode *)node;
       CGFloat testAngle = normalize([playerNode angleWithCenter:self.trackCenter]);
