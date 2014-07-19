@@ -36,7 +36,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
 @property (nonatomic) SGG_Spine* ninja;
-
+@property (nonatomic) UITapGestureRecognizer* tapRecognizer;
 @property (nonatomic) NSInteger numHitPegs;
 
 @end
@@ -62,17 +62,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addGestureRecognizersToView:(SKView *)view
 {
-   UITapGestureRecognizer* tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
-                                            {
-                                               NSLog(@"tap!");
-                                               [self.ninja activateAnimations];
-                                            }];
+   self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
+                         {
+                            NSLog(@"tap!");
+                            [self.ninja activateAnimations];
+                         }];
 
-   [view addGestureRecognizer:tapRecognizer];
+   [view addGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)removeGestureRecognizers
 {
+   [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -188,6 +189,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 -(void)endGame
 {
    self.scene.view.paused = YES;
+   [self removeGestureRecognizers];
    
    SKSpriteNode* endColorNode = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithWhite:0.9 alpha:0.8] size:self.frame.size];
    endColorNode.anchorPoint = CGPointMake(0, 0);

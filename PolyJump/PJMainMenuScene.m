@@ -31,7 +31,7 @@
    mainLabel.fontColor = [SKColor blackColor];
    mainLabel.text = @"Poly Jump";
    mainLabel.fontSize = 30;
-   mainLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+   mainLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)+100);
 
    [self addChild:mainLabel];
 }
