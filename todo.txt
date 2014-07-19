@@ -1,4 +1,7 @@
 Don't load any spine models during game play (load up front)
 Handle pausing
+Gamecenter support
 
-Make "jumping all the time" technique not work as well (I think this is ok for now)
+Game balance
+- Run AI on a different (less frequent?) timer to scale difficulty
+- Make "jumping all the time" technique not work as well (I think this is ok for now)

@@ -127,7 +127,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self addChild:aiPlayerNode];
       aiPlayerNode.alpha = 0;
       [aiPlayerNode runAction:[SKAction fadeInWithDuration:0.3]];
-      [self queuePlayerNodeForPlaying:aiPlayerNode];
+      
+      CGFloat delay = 1.5 + (rand()%10)/10.0;  // 1.5-2.5
+      [self queuePlayerNodeForPlaying:aiPlayerNode withDelay:delay];
    }
 }
 
@@ -139,10 +141,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    playerNode.zRotation = angleOnTrackRadians + M_PI/2;
 }
 
-- (void)queuePlayerNodeForPlaying:(PlayerNode *)playerNode
+- (void)queuePlayerNodeForPlaying:(PlayerNode *)playerNode withDelay:(CGFloat)seconds
 {
    // After 3 seconds, position back on the track
-   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       
       [self playPlayerNode:playerNode];
    });
