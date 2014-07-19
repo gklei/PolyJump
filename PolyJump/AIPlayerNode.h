@@ -10,4 +10,6 @@
 
 @interface AIPlayerNode : PlayerNode
 
+@property(nonatomic) CGFloat difficulty;
+
 @end

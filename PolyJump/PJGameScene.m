@@ -63,12 +63,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
-      [self addBadGuy];
-      [self addBadGuy];
-      [self addBadGuy];
-      [self addBadGuy];
-
       [self setupNinja];
+      
+      [self addChild:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
    }
    return self;
 }
@@ -162,15 +159,16 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.barNode];
 }
 
-- (void)addBadGuy
+- (AIPlayerNode *)aiPlayerNodeWithDifficulty:(CGFloat)difficulty
+                       atTrackAngleInDegrees:(CGFloat)angleOnTrackDegrees
 {
    AIPlayerNode* playerNode = [AIPlayerNode node];
-   CGFloat angleOnTrackDegrees = rand() % 360;
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleOnTrackDegrees);
    playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
    playerNode.name = @"player";
    playerNode.zRotation = angleOnTrackRadians + M_PI/2;
-   [self addChild:playerNode];
+   playerNode.difficulty = difficulty;
+   return playerNode;
 }
 
 - (void)setupNinja

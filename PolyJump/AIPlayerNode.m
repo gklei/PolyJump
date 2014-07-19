@@ -55,26 +55,29 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    {
       CGFloat startOffset = rand() % 20;
       CGFloat lookAheadStart = oldBarAngle + radiansFromDegrees(barDirectionMultiplier * startOffset);
-      
-      CGFloat endOffset = 3 + (rand() % 40);
+      CGFloat endOffset = -5 + (rand() % 100*self.difficulty);
       CGFloat lookAheadEnd = newBarAngle + radiansFromDegrees(barDirectionMultiplier * endOffset);
-      
       normalizeRange(&lookAheadStart, &lookAheadEnd);
       if ( angleInRange(angleOnTrack, lookAheadStart, lookAheadEnd) )
       {
-         int r = rand() % 2;
-         switch( r )
-         {
-            case 0:
-               [self jump];
-               break;
-            case 1:
-               deltaBarAngle > 0 ? [self punchLeft] : [self punchRight];
-               break;
-         }
+         BOOL toTheLeft = deltaBarAngle > 0;
+         [self doSomethingRandomly:toTheLeft];
       }
    }
 }
 
+- (void)doSomethingRandomly:(BOOL)toTheLeft
+{
+   int r = rand() % 2;
+   switch( r )
+   {
+      case 0:
+         [self jump];
+         break;
+      case 1:
+         toTheLeft ? [self punchLeft] : [self punchRight];
+         break;
+   }
+}
 
 @end
