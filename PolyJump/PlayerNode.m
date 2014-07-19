@@ -120,9 +120,17 @@
    });
 }
 
-- (void)update
+- (void)updateAnimations
 {
    [self.spineNode activateAnimations];
+}
+
+- (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle
+                           newBarAngle:(CGFloat)newBarAngle
+                           trackCenter:(CGPoint)trackCenter
+                           trackRadius:(CGFloat)trackRadius
+{
+   // Implement AI in subclass
 }
 
 - (void)makeInvincibleForSeconds:(CGFloat)seconds

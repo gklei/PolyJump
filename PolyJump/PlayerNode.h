@@ -34,7 +34,11 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 - (void)punchLeft;
 - (void)punchRight;
 
-- (void)update;
+- (void)updateAnimations;
+- (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle
+                           newBarAngle:(CGFloat)newBarAngle
+                           trackCenter:(CGPoint)trackCenter
+                           trackRadius:(CGFloat)trackRadius;
 
 - (void)makeInvincibleForSeconds:(CGFloat)seconds;
 

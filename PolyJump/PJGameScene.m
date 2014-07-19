@@ -10,6 +10,7 @@
 #import "PJBarNode.h"
 #import "SpineImport.h"
 #import "PlayerNode.h"
+#import "AIPlayerNode.h"
 #import "PJButtonLabelNode.h"
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
@@ -61,10 +62,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
-//      [self addBadGuy];
-//      [self addBadGuy];
-//      [self addBadGuy];
-//      [self addBadGuy];
+      [self addBadGuy];
+      [self addBadGuy];
+      [self addBadGuy];
+      [self addBadGuy];
 
       [self setupNinja];
    }
@@ -162,7 +163,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addBadGuy
 {
-   PlayerNode* playerNode = [PlayerNode node];
+   AIPlayerNode* playerNode = [AIPlayerNode node];
    CGFloat angleOnTrackDegrees = rand() % 360;
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleOnTrackDegrees);
    playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
@@ -204,7 +205,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       NSTimeInterval dt = currentTime - self.lastTime;
       CGFloat oldBarAngle = self.barNode.zRotation;
       [self.barNode updateWithDeltaTime:dt];
-      [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
+      CGFloat newBarAngle = self.barNode.zRotation;
+      
+      [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
+      
+      [self updateDecisionsWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
    }
 
    self.lastTime = currentTime;
@@ -214,7 +219,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
       PlayerNode* playerNode = (PlayerNode *)node;
-      [playerNode update];
+      [playerNode updateAnimations];
+   }];
+}
+
+- (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
+{
+   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+      PlayerNode* playerNode = (PlayerNode *)node;
+      [playerNode updateDecisionsWithOldBarAngle:oldBarAngle
+                                     newBarAngle:newBarAngle
+                                     trackCenter:self.trackCenter
+                                     trackRadius:self.trackRadius];
    }];
 }
 
