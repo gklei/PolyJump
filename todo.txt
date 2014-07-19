@@ -1,0 +1,2 @@
+Make "jumping all the time" technique not work as well
+Don't load any spine models during game play (load up front)
