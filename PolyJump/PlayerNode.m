@@ -76,6 +76,9 @@
 
 - (void)jump
 {
+   if ( self.state != PlayerStateIdle )
+      return;
+   
    SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
    SKAction* jumpDownAction = [SKAction moveByX:0 y:-50 duration:0.2];
    jumpUpAction.timingMode = SKActionTimingEaseOut;
@@ -91,6 +94,9 @@
 
 - (void)punchLeft
 {
+   if ( self.state != PlayerStateIdle )
+      return;
+
    [self.spineNode runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
    
    self.state = PlayerStatePunchingLeft;
@@ -102,6 +108,9 @@
 
 - (void)punchRight
 {
+   if ( self.state != PlayerStateIdle )
+      return;
+
    [self.spineNode runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
 
    self.state = PlayerStatePunchingRight;
@@ -115,7 +124,6 @@
 {
    [self.spineNode activateAnimations];
 }
-
 
 - (void)makeInvincibleForSeconds:(CGFloat)seconds
 {
