@@ -42,7 +42,7 @@
 -(void)updateWithDeltaTime:(NSTimeInterval)deltaTime
 {
    self.zRotation = self.zRotation + self.velocity*deltaTime;
-   self.velocity = MIN(self.velocity*1.0007, 10);
+   self.velocity = MIN(self.velocity*1.0005, 8);
 }
 
 -(void)reverseDirection
