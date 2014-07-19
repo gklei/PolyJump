@@ -60,15 +60,24 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    return self;
 }
 
-- (void)didMoveToView:(SKView *)view
+- (void)addGestureRecognizersToView:(SKView *)view
 {
    UITapGestureRecognizer* tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
                                             {
                                                NSLog(@"tap!");
                                                [self.ninja activateAnimations];
                                             }];
-   
+
    [view addGestureRecognizer:tapRecognizer];
+}
+
+- (void)removeGestureRecognizers
+{
+}
+
+- (void)didMoveToView:(SKView *)view
+{
+   [self addGestureRecognizersToView:view];
 }
 
 - (void)setupMainLabel
