@@ -8,6 +8,11 @@
 
 #import "AIPlayerNode.h"
 
+static CGFloat radiansFromDegrees(CGFloat degrees)
+{
+   return (degrees*2*M_PI)/360;
+}
+
 static CGFloat normalize(CGFloat angle)
 {
    while(angle<0)
@@ -48,9 +53,14 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat barDirectionMultiplier = deltaBarAngle > 0 ? 1 : -1;
    if ( angleOnTrack )
    {
-      CGFloat lookAheadNewBarAngle = newBarAngle + (barDirectionMultiplier*M_PI/20);
-      normalizeRange(&oldBarAngle, &lookAheadNewBarAngle);
-      if ( angleInRange(angleOnTrack, oldBarAngle, lookAheadNewBarAngle) )
+      CGFloat startOffset = rand() % 20;
+      CGFloat lookAheadStart = oldBarAngle + radiansFromDegrees(barDirectionMultiplier * startOffset);
+      
+      CGFloat endOffset = 3 + (rand() % 40);
+      CGFloat lookAheadEnd = newBarAngle + radiansFromDegrees(barDirectionMultiplier * endOffset);
+      
+      normalizeRange(&lookAheadStart, &lookAheadEnd);
+      if ( angleInRange(angleOnTrack, lookAheadStart, lookAheadEnd) )
       {
          int r = rand() % 2;
          switch( r )
