@@ -12,7 +12,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-   srand(time(NULL));
+   srand((unsigned int)time(NULL));
     return YES;
 }
 							
