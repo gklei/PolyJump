@@ -69,7 +69,6 @@
 }
 
 -(CGFloat)angleWithCenter:(CGPoint)center
-                   radius:(CGFloat)radius
 {
    return atan2f(self.position.y - center.y, self.position.x - center.x);
 }

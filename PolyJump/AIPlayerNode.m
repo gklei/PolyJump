@@ -48,7 +48,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
                            trackCenter:(CGPoint)trackCenter
                            trackRadius:(CGFloat)trackRadius
 {
-   CGFloat angleOnTrack = normalize([self angleWithCenter:trackCenter radius:trackRadius]);
+   CGFloat angleOnTrack = normalize([self angleWithCenter:trackCenter]);
    CGFloat deltaBarAngle = newBarAngle - oldBarAngle;
    CGFloat barDirectionMultiplier = deltaBarAngle > 0 ? 1 : -1;
    if ( angleOnTrack )

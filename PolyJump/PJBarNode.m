@@ -31,7 +31,7 @@
       self.path = [UIBezierPath bezierPathWithRect:rect].CGPath;
       self.fillColor = [SKColor redColor];
       self.lineWidth = 0.0;
-      self.zRotation = M_PI_4;
+      self.zRotation = -M_PI/4;
       
       self.velocity = 3;
    }

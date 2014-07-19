@@ -29,7 +29,7 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 +(CGPoint)positionWithCenter:(CGPoint)center
                       radius:(CGFloat)radius
                        angle:(CGFloat)angleDegrees;
--(CGFloat)angleWithCenter:(CGPoint)center radius:(CGFloat)radius;
+-(CGFloat)angleWithCenter:(CGPoint)center;
 
 - (void)jump;
 - (void)punchLeft;
