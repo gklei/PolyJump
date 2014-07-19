@@ -18,7 +18,12 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 @interface PlayerNode : SKNode
 
 @property(nonatomic, assign) PlayerState state;
+@property(nonatomic, assign) BOOL invincible;
+
 @property(nonatomic, readonly) BOOL isIdle;
+@property(nonatomic, readonly) BOOL isPunchingLeft;
+@property(nonatomic, readonly) BOOL isPunchingRight;
+@property(nonatomic, readonly) BOOL isJumping;
 
 +(CGPoint)positionWithCenter:(CGPoint)center
                       radius:(CGFloat)radius
@@ -30,5 +35,7 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 - (void)punchRight;
 
 - (void)update;
+
+- (void)makeInvincibleForSeconds:(CGFloat)seconds;
 
 @end

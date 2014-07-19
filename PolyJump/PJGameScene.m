@@ -61,10 +61,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
-      [self addBadGuy];
-      [self addBadGuy];
-      [self addBadGuy];
-      [self addBadGuy];
+//      [self addBadGuy];
+//      [self addBadGuy];
+//      [self addBadGuy];
+//      [self addBadGuy];
 
       [self setupNinja];
    }
@@ -166,7 +166,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleOnTrackDegrees = rand() % 360;
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleOnTrackDegrees);
    playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
-   playerNode.name = @"enemy";
+   playerNode.name = @"player";
    playerNode.zRotation = angleOnTrackRadians + M_PI/2;
    [self addChild:playerNode];
 }
@@ -175,6 +175,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    self.controlledPlayerNode = [PlayerNode node];
    self.controlledPlayerNode.position = self.ninjaCenter;
+   self.controlledPlayerNode.name = @"player";
    [self addChild:self.controlledPlayerNode];
 }
 
@@ -196,6 +197,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)update:(NSTimeInterval)currentTime
 {
+   [self updatePlayers];
+
    if ( self.lastTime )
    {
       NSTimeInterval dt = currentTime - self.lastTime;
@@ -204,14 +207,15 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
    }
 
-   [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
+   self.lastTime = currentTime;
+}
+
+- (void)updatePlayers
+{
+   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
       PlayerNode* playerNode = (PlayerNode *)node;
       [playerNode update];
    }];
-   
-   [self.controlledPlayerNode update];
-
-   self.lastTime = currentTime;
 }
 
 -(void)hitTestWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
@@ -220,13 +224,29 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    CGFloat angleStart = normalize(oldBarAngle);
    CGFloat angleEnd   = angleStart + angleDelta;
    
-   [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
+   [self enumerateChildNodesWithName:@"player" usingBlock:^(SKNode *node, BOOL *stop) {
+      
       PlayerNode* playerNode = (PlayerNode *)node;
       CGFloat testAngle = normalize([playerNode angleWithCenter:self.trackCenter radius:self.trackRadius]);
       if ( angleInRange(testAngle, angleStart, angleEnd) )
       {
-//         NSLog(@"hit playerNode %@", playerNode);
-         self.numHitPegs = self.numHitPegs + 1;
+         if ( (playerNode.isPunchingLeft && angleDelta > 0) ||
+              (playerNode.isPunchingRight && angleDelta < 0) )
+         {
+            [self.barNode reverseDirection];
+            [playerNode makeInvincibleForSeconds:1/30.0f]; // Necessary because the bar will still be hitting the player the next frame
+         }
+         else if ( playerNode.isJumping )
+         {
+         }
+         else
+         {
+            if ( !playerNode.invincible )
+            {
+               [playerNode removeFromParent];
+               self.numHitPegs = self.numHitPegs + 1;
+            }
+         }
       }
    }];
    

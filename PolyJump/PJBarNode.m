@@ -45,4 +45,9 @@
    self.velocity = MIN(self.velocity*1.0007, 10);
 }
 
+-(void)reverseDirection
+{
+   self.velocity = -self.velocity;
+}
+
 @end

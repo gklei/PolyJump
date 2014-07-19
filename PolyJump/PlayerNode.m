@@ -43,6 +43,21 @@
    return self.state == PlayerStateIdle;
 }
 
+- (BOOL)isPunchingLeft
+{
+   return self.state == PlayerStatePunchingLeft;
+}
+
+- (BOOL)isPunchingRight
+{
+   return self.state == PlayerStatePunchingRight;
+}
+
+- (BOOL)isJumping
+{
+   return self.state == PlayerStateJumping;
+}
+
 +(CGPoint)positionWithCenter:(CGPoint)center
                       radius:(CGFloat)radius
                        angle:(CGFloat)angleRadians
@@ -101,5 +116,13 @@
    [self.spineNode activateAnimations];
 }
 
+
+- (void)makeInvincibleForSeconds:(CGFloat)seconds
+{
+   self.invincible = YES;
+   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      self.invincible = NO;
+   });
+}
 
 @end
