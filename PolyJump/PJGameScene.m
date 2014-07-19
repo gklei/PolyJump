@@ -61,6 +61,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @property (nonatomic) BOOL isPlaying;
 
+@property (nonatomic) NSTimeInterval totalGameTime;
+
 @end
 
 @implementation PJGameScene
@@ -164,6 +166,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)startGame
 {
    self.isPlaying = YES;
+   self.totalGameTime = 0;
    
    self.barNode.isAccelerating = YES;
    
@@ -326,10 +329,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
       [self updateDecisionsWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
+      
+      self.totalGameTime = self.totalGameTime + dt;
       [self checkForEndGame];
    }
    
-
    self.lastTime = currentTime;
 }
 
@@ -344,7 +348,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       PlayerNode* playerNode = (PlayerNode *)node;
       [playerNode updateAnimations];
    }];
-
 }
 
 - (void)updateDecisionsWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
@@ -390,9 +393,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
          }
       }
    }];
-   
-//   if ( self.numHitPegs > 3 )
-//      [self endGame];
 }
 
 -(void)checkForEndGame
@@ -418,7 +418,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self setupLevel:self.currentLevelNumber];
 }
 
-
 -(void)endGame:(BOOL)win
 {
    self.scene.view.paused = YES;
@@ -428,6 +427,15 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    endColorNode.anchorPoint = CGPointMake(0, 0);
    endColorNode.zPosition = 1;
    [self addChild:endColorNode];
+   
+   SKLabelNode* scoreNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   scoreNode.fontSize = 28;
+   scoreNode.fontColor = [SKColor blackColor];
+   scoreNode.text = [NSString stringWithFormat:@"Score: %ld seconds", (long)round(self.totalGameTime)];
+   scoreNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 200);
+   [self addChild:scoreNode];
+   scoreNode.zPosition = 2;
+   
    
    PJButtonLabelNode* retryButton = [PJButtonLabelNode nodeWithText:@"Retry"];
    retryButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
