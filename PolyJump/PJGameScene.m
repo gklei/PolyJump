@@ -80,17 +80,29 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
    
    self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      NSLog(@"up");
-//      [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+      
+      SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
+      SKAction* jumpDownAction = [SKAction moveByX:0 y:-50 duration:0.2];
+      jumpUpAction.timingMode = SKActionTimingEaseOut;
+      jumpDownAction.timingMode = SKActionTimingEaseIn;
+
+      SKAction* jumpAction = [SKAction sequence:@[jumpUpAction, jumpDownAction]];
+      [self.ninja runAction:jumpAction];
    }];
 
-   self.leftSwipeRecognizer.delegate = self;
-   self.rightSwipeRecognizer.delegate = self;
-   self.upSwipeRecognizer.delegate = self;
    self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
                          {
                             [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
                          }];
+
+   self.leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+   self.rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+   self.upSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+
+   self.leftSwipeRecognizer.delegate = self;
+   self.rightSwipeRecognizer.delegate = self;
+   self.upSwipeRecognizer.delegate = self;
+   self.tapRecognizer.delegate = self;
 
    [view addGestureRecognizer:self.leftSwipeRecognizer];
    [view addGestureRecognizer:self.rightSwipeRecognizer];
@@ -103,6 +115,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self.view removeGestureRecognizer:self.leftSwipeRecognizer];
    [self.view removeGestureRecognizer:self.rightSwipeRecognizer];
    [self.view removeGestureRecognizer:self.upSwipeRecognizer];
+   [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
