@@ -14,6 +14,11 @@
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
 
+static CGFloat radiansFromDegrees(CGFloat degrees)
+{
+   return (degrees*2*M_PI)/360;
+}
+
 static CGFloat normalize(CGFloat angle)
 {
    while(angle<0)
@@ -36,11 +41,13 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
-@property (nonatomic) SGG_Spine* ninja;
+@property (nonatomic) PlayerNode* controlledPlayerNode;
+
 @property (nonatomic) UITapGestureRecognizer* tapRecognizer;
 @property (nonatomic) UISwipeGestureRecognizer* leftSwipeRecognizer;
 @property (nonatomic) UISwipeGestureRecognizer* rightSwipeRecognizer;
 @property (nonatomic) UISwipeGestureRecognizer* upSwipeRecognizer;
+
 @property (nonatomic) NSInteger numHitPegs;
 
 @end
@@ -54,10 +61,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       [self setupTrack];
       [self setupBar];
-      [self addPeg];
-      [self addPeg];
-      [self addPeg];
-      [self addPeg];
+      [self addBadGuy];
+      [self addBadGuy];
+      [self addBadGuy];
+      [self addBadGuy];
 
       [self setupNinja];
    }
@@ -72,22 +79,15 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)addGestureRecognizersToView:(SKView *)view
 {
    self.leftSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      [self.ninja runAnimation:@"leftPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+      [self.controlledPlayerNode punchLeft];
    }];
 
    self.rightSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      [self.ninja runAnimation:@"rightPunch" andCount:0 withIntroPeriodOf:0.0 andUseQueue:NO];
+      [self.controlledPlayerNode punchRight];
    }];
    
    self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      
-      SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
-      SKAction* jumpDownAction = [SKAction moveByX:0 y:-50 duration:0.2];
-      jumpUpAction.timingMode = SKActionTimingEaseOut;
-      jumpDownAction.timingMode = SKActionTimingEaseIn;
-
-      SKAction* jumpAction = [SKAction sequence:@[jumpUpAction, jumpDownAction]];
-      [self.ninja runAction:jumpAction];
+      [self.controlledPlayerNode jump];
    }];
 
    self.tapRecognizer = [UITapGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location)
@@ -160,24 +160,24 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:self.barNode];
 }
 
-- (void)addPeg
+- (void)addBadGuy
 {
    PlayerNode* playerNode = [PlayerNode node];
-   CGFloat angle = rand() % 360;
-   playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angle];
+   CGFloat angleOnTrackDegrees = rand() % 360;
+   CGFloat angleOnTrackRadians = radiansFromDegrees(angleOnTrackDegrees);
+   playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
    playerNode.name = @"enemy";
+   
+//   CGFloat playerRotation = angleOnTrack;
+   playerNode.zRotation = angleOnTrackRadians + M_PI/2;
    [self addChild:playerNode];
 }
 
 - (void)setupNinja
 {
-   self.ninja = [SGG_Spine node];
-   [self.ninja skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
-   self.ninja.position = self.ninjaCenter;
-   self.ninja.zPosition = 0;
-   self.ninja.xScale = 0.4;
-   self.ninja.yScale = 0.4;
-   [self addChild:self.ninja];
+   self.controlledPlayerNode = [PlayerNode node];
+   self.controlledPlayerNode.position = self.ninjaCenter;
+   [self addChild:self.controlledPlayerNode];
 }
 
 - (CGPoint)ninjaCenter
@@ -206,7 +206,12 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:self.barNode.zRotation];
    }
 
-   [self.ninja activateAnimations];
+   [self enumerateChildNodesWithName:@"enemy" usingBlock:^(SKNode *node, BOOL *stop) {
+      PlayerNode* playerNode = (PlayerNode *)node;
+      [playerNode update];
+   }];
+   
+   [self.controlledPlayerNode update];
 
    self.lastTime = currentTime;
 }

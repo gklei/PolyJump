@@ -8,13 +8,27 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface PlayerNode : SKShapeNode
+typedef NS_OPTIONS(NSUInteger, PlayerState) {
+   PlayerStateIdle = 0,
+   PlayerStateJumping = 1,
+   PlayerStatePunchingLeft = 2,
+   PlayerStatePunchingRight = 3,
+};
 
-+(PlayerNode *)node;
+@interface PlayerNode : SKNode
+
+@property(nonatomic, assign) PlayerState state;
+@property(nonatomic, readonly) BOOL isIdle;
 
 +(CGPoint)positionWithCenter:(CGPoint)center
                       radius:(CGFloat)radius
                        angle:(CGFloat)angleDegrees;
--(CGFloat)angleWithCenter:(CGPoint)center
-                   radius:(CGFloat)radius;
+-(CGFloat)angleWithCenter:(CGPoint)center radius:(CGFloat)radius;
+
+- (void)jump;
+- (void)punchLeft;
+- (void)punchRight;
+
+- (void)update;
+
 @end
