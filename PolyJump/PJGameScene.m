@@ -276,21 +276,26 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)addGestureRecognizersToView:(SKView *)view
 {
    self.leftSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      [self.controlledPlayerNode punchLeft];
+      if ( !self.view.paused )
+         [self.controlledPlayerNode punchLeft];
    }];
 
    self.rightSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+      if ( !self.view.paused )
       [self.controlledPlayerNode punchRight];
    }];
    
    self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      if ( self.isPlaying )
+      if ( !self.view.paused )
       {
-         [self.controlledPlayerNode jump];
-      }
-      else
-      {
-         [self startGame];
+         if ( self.isPlaying )
+         {
+            [self.controlledPlayerNode jump];
+         }
+         else
+         {
+            [self startGame];
+         }
       }
    }];
 
