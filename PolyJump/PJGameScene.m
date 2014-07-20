@@ -168,18 +168,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    NSMutableArray* aiPlayerNodesToAdd = [NSMutableArray array];
    switch ( levelNumber )
    {
-//      case 1:
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
-//         break;
-//      case 2:
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:45]];
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:135]];
-//         break;
-//      case 3:
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:55]];
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:90]];
-//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:125]];
-//         break;
+      case 1:
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
+         break;
+      case 2:
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:45]];
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:135]];
+         break;
+      case 3:
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:55]];
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:90]];
+         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:125]];
+         break;
       default:
       {
          for( int i = 0; i < 4; i++ )
