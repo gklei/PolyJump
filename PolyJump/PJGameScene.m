@@ -91,8 +91,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self setupBar];
       [self setupNinja];
       
-      self.currentLevelNumber = 1;
-//      [self setupLevel:self.currentLevelNumber];
+      self.currentLevelNumber = 0;
       
       self.isPlaying = NO;
    }
@@ -166,36 +165,44 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)setupLevel:(NSInteger)levelNumber
 {
    NSMutableArray* aiPlayerNodesToAdd = [NSMutableArray array];
+   PlayerNode* newNode;
    switch ( levelNumber )
    {
       case 1:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
+         newNode = [self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90];
+         [aiPlayerNodesToAdd addObject:newNode];
+         [self addChild:newNode];
          break;
       case 2:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:45]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:135]];
-         break;
-      case 3:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:55]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:90]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:125]];
-         break;
-      default:
-      {
-         for( int i = 0; i < 4; i++ )
+         for( int angle = 45; angle <= 135; angle += 90 )
          {
-            PlayerNode* newNode = [self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:[self newAIPlayerAngle]];
+            newNode = [self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:angle];
             [aiPlayerNodesToAdd addObject:newNode];
             [self addChild:newNode];
          }
-      }
+         break;
+      case 3:
+         for( int angle = 55; angle <= 125; angle += 35 )
+         {
+            newNode = [self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:angle];
+            [aiPlayerNodesToAdd addObject:newNode];
+            [self addChild:newNode];
+         }
+         break;
+      default:
+         for( int i = 0; i < 4; i++ )
+         {
+            // newAIPlayerAngle checks previous nodes so we need to add the child node before we call newAIPlayerAngle again
+            newNode = [self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:[self newAIPlayerAngle]];
+            [aiPlayerNodesToAdd addObject:newNode];
+            [self addChild:newNode];
+         }
    }
    
    for( AIPlayerNode* aiPlayerNode in aiPlayerNodesToAdd)
    {
       aiPlayerNode.alpha = 0;
       [aiPlayerNode runAction:[SKAction fadeInWithDuration:0.3]];
-      
       CGFloat delay = 1.5 + (rand()%10)/10.0;  // 1.5-2.5
       [self queuePlayerNodeForPlaying:aiPlayerNode withDelay:delay];
    }
