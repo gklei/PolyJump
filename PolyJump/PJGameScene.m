@@ -14,6 +14,7 @@
 #import "PJButtonLabelNode.h"
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
+#import "SKScene+nodesWithName.h"
 
 static NSString* s_inGamePlayerName = @"player";
 static NSString* s_preparingPlayerName = @"preparingPlayer";
@@ -23,11 +24,23 @@ static CGFloat radiansFromDegrees(CGFloat degrees)
    return (degrees*2*M_PI)/360;
 }
 
+static CGFloat degreesFromRadians(CGFloat radians)
+{
+   return 360*radians / (2*M_PI);
+}
+
 static CGFloat normalize(CGFloat angle)
 {
    while(angle<0)
       angle += 2*M_PI;
    return fmodf(angle, 2*M_PI);
+}
+
+static CGFloat normalizeDegrees(CGFloat angle)
+{
+   while(angle<0)
+      angle += 360;
+   return fmodf(angle, 360);
 }
 
 static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
@@ -97,34 +110,89 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:labelNode];
 }
 
+- (NSArray *)inGamePlayerNodes
+{
+   return [self nodesWithName:s_inGamePlayerName];
+}
+
+- (NSArray *)preparingPlayerNodes
+{
+   return [self nodesWithName:s_preparingPlayerName];
+}
+
+- (NSArray *)allPlayerNodes
+{
+   return [[self preparingPlayerNodes] arrayByAddingObjectsFromArray:[self inGamePlayerNodes]];
+}
+
+- (NSArray *)allPlayerNodeAngles
+{
+   NSMutableArray* angles = [NSMutableArray array];
+   NSArray* playerNodes = [self allPlayerNodes];
+   for( PlayerNode* playerNode in playerNodes )
+   {
+      CGFloat angle = [playerNode angleWithCenter:self.trackCenter];
+      [angles addObject:@(angle)];
+   }
+   return angles;
+}
+
+
+- (CGFloat)newAIPlayerAngle
+{
+   NSArray* existingAngles = [self allPlayerNodeAngles];
+   CGFloat angle;
+   BOOL spacedOutEnough;
+   do
+   {
+      angle = normalizeDegrees(-45 + rand()%270);
+      spacedOutEnough = YES;
+      for( NSNumber* existingAngleNumber in existingAngles )
+      {
+         CGFloat existingAngle = degreesFromRadians(normalize([existingAngleNumber floatValue]));
+         if ( abs(existingAngle - angle ) < 30 ||
+              abs(existingAngle+360 - angle) < 30 ||
+              abs(existingAngle - (angle+360)) < 30 )
+         {
+            spacedOutEnough = NO;
+            break;
+         }
+      }
+   }
+   while( !spacedOutEnough );
+   return angle;
+}
+
 - (void)setupLevel:(NSInteger)levelNumber
 {
    NSMutableArray* aiPlayerNodesToAdd = [NSMutableArray array];
    switch ( levelNumber )
    {
-      case 1:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
-         break;
-      case 2:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:45]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:135]];
-         break;
-      case 3:
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:55]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:90]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:125]];
-         break;
+//      case 1:
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.1 atTrackAngleInDegrees:90]];
+//         break;
+//      case 2:
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:45]];
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.3 atTrackAngleInDegrees:135]];
+//         break;
+//      case 3:
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:55]];
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:90]];
+//         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.5 atTrackAngleInDegrees:125]];
+//         break;
       default:
-         // -45 - 225
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:-45 + rand()%270]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:-45 + rand()%270]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:-45 + rand()%270]];
-         [aiPlayerNodesToAdd addObject:[self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:-45 + rand()%270]];
+      {
+         for( int i = 0; i < 4; i++ )
+         {
+            PlayerNode* newNode = [self aiPlayerNodeWithDifficulty:0.8 atTrackAngleInDegrees:[self newAIPlayerAngle]];
+            [aiPlayerNodesToAdd addObject:newNode];
+            [self addChild:newNode];
+         }
+      }
    }
    
    for( AIPlayerNode* aiPlayerNode in aiPlayerNodesToAdd)
    {
-      [self addChild:aiPlayerNode];
       aiPlayerNode.alpha = 0;
       [aiPlayerNode runAction:[SKAction fadeInWithDuration:0.3]];
       
