@@ -15,6 +15,7 @@
 #import "PJMainMenuScene.h"
 #import "UIGestureRecognizer+BlocksKit.h"
 #import "SKScene+nodesWithName.h"
+#import "PJButtonLabelNode.h"
 
 static NSString* s_inGamePlayerName = @"player";
 static NSString* s_preparingPlayerName = @"preparingPlayer";
@@ -86,6 +87,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    {
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       
+      [self setupPauseButton];
       [self setupInstructions];
       [self setupTrack];
       [self setupBar];
@@ -96,6 +98,21 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.isPlaying = NO;
    }
    return self;
+}
+
+- (void)setupPauseButton
+{
+   PJButtonLabelNode* buttonNode = [PJButtonLabelNode nodeWithText:@"Pause"];
+   buttonNode.position = CGPointMake(CGRectGetMaxX(self.frame) - 40, 20);
+   
+   __weak typeof(self) weakSelf = self;
+   __weak PJButtonLabelNode* weakButtonNode = buttonNode;
+   buttonNode.touchEndedHandler = ^{
+      self.scene.view.paused = !self.scene.view.paused;
+      weakButtonNode.text = weakSelf.scene.view.paused ? @"Resume" : @"Pause";
+      self.lastTime = 0;
+   };
+   [self addChild:buttonNode];
 }
 
 - (void)setupInstructions
