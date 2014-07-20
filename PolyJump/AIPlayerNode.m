@@ -37,9 +37,24 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @implementation AIPlayerNode
 
++(AIPlayerNode *)aiPlayerNodeWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider
+{
+   return [[AIPlayerNode alloc] initWithGameMetricProvider:gameMetricProvider];
+}
+
 +(AIPlayerNode *)node
 {
+   NSParameterAssert(NO);
    return [[AIPlayerNode alloc] init];
+}
+
+- (instancetype)initWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider
+{
+   self = [super initWithGameMetricProvider:gameMetricProvider];
+   if ( self )
+   {
+   }
+   return self;
 }
 
 - (BOOL)shouldMakeDecision
@@ -56,7 +71,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    if ( ![self shouldMakeDecision] )
       return;
    
-   CGFloat angleOnTrack = normalize([self angleWithCenter:trackCenter]);
+   CGFloat angleOnTrack = normalize(self.angleOnTrack);
    CGFloat deltaBarAngle = newBarAngle - oldBarAngle;
    CGFloat barDirectionMultiplier = deltaBarAngle > 0 ? 1 : -1;
    if ( angleOnTrack )

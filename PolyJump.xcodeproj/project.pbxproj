@@ -57,6 +57,7 @@
 
 /* Begin PBXFileReference section */
 		27E12313C6EF461F8056BEB1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4306E45A197C3BA20012074F /* PJGameMetricProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PJGameMetricProvider.h; sourceTree = "<group>"; };
 		4376B631197AB51D00D8F0A7 /* AIPlayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPlayerNode.h; sourceTree = "<group>"; };
 		4376B632197AB51D00D8F0A7 /* AIPlayerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPlayerNode.m; sourceTree = "<group>"; };
 		4376B638197AE9EF00D8F0A7 /* SKScene+nodesWithName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKScene+nodesWithName.h"; sourceTree = "<group>"; };
@@ -182,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				8E11BF5E196E4A1000730B6B /* PlayerNode.h */,
+				4306E45A197C3BA20012074F /* PJGameMetricProvider.h */,
 				8E11BF5F196E4A1000730B6B /* PlayerNode.m */,
 				4376B631197AB51D00D8F0A7 /* AIPlayerNode.h */,
 				4376B632197AB51D00D8F0A7 /* AIPlayerNode.m */,

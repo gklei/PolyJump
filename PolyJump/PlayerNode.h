@@ -7,6 +7,7 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import "PJGameMetricProvider.h"
 
 typedef NS_OPTIONS(NSUInteger, PlayerState) {
    PlayerStateIdle = 0,
@@ -26,10 +27,14 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 @property(nonatomic, readonly) BOOL isPunchingRight;
 @property(nonatomic, readonly) BOOL isJumping;
 
-+(CGPoint)positionWithCenter:(CGPoint)center
-                      radius:(CGFloat)radius
-                       angle:(CGFloat)angleDegrees;
--(CGFloat)angleWithCenter:(CGPoint)center;
+@property(nonatomic) CGFloat angleOnTrack;
+
++(PlayerNode *)playerNodeWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider;
+- (instancetype)initWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider;
+
+- (CGFloat)angleWithCenter:(CGPoint)center;
+
+- (void)jumpOnTrackAndStartPlayingWithCompletionHandler:(dispatch_block_t)completionHandler;
 
 - (void)jump;
 - (void)punchLeft;

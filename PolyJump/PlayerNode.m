@@ -12,21 +12,30 @@
 @interface PlayerNode()
 
 @property(nonatomic) SGG_Spine* spineNode;
-
+@property(nonatomic, weak) id<PJGameMetricProvider> gameMetricProvider;
+@property(nonatomic) BOOL isOnTrack;
 @end
 
 @implementation PlayerNode
 
++(PlayerNode *)playerNodeWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider
+{
+   return [[PlayerNode alloc] initWithGameMetricProvider:gameMetricProvider];
+}
+
 +(PlayerNode *)node
 {
+   NSParameterAssert(NO);  // use gamemetric provider instead
    return [[PlayerNode alloc] init];
 }
 
-- (instancetype)init
+- (instancetype)initWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider
 {
    self = [super init];
    if (self)
    {
+      self.isOnTrack = NO;
+      self.gameMetricProvider = gameMetricProvider;
       self.spineNode = [SGG_Spine node];
       [self.spineNode skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
       self.spineNode.xScale = 0.4;
@@ -58,20 +67,44 @@
    return self.state == PlayerStateJumping;
 }
 
-+(CGPoint)positionWithCenter:(CGPoint)center
-                      radius:(CGFloat)radius
-                       angle:(CGFloat)angleRadians
+- (CGFloat)angleOnTrack
 {
-//   CGFloat angleRad = (angleDegrees*2*M_PI)/360;
-   return CGPointMake(center.x + radius * cos(angleRadians),
-                                  center.y + radius * sin(angleRadians));
-   
+   CGPoint trackCenter = self.gameMetricProvider.trackCenter;
+   return atan2f(self.position.y - trackCenter.y, self.position.x - trackCenter.x);
+}
+
+- (CGPoint)positionOnTrackWithAngle:(CGFloat)angleOnTrack
+{
+   CGPoint trackCenter = self.gameMetricProvider.trackCenter;
+   CGFloat trackRadius = self.isOnTrack ? self.gameMetricProvider.trackRadius : self.gameMetricProvider.preparingTrackRadius;
+   return CGPointMake(trackCenter.x + trackRadius * cos(angleOnTrack),
+                      trackCenter.y + trackRadius * sin(angleOnTrack));
+}
+
+- (void)setAngleOnTrack:(CGFloat)angleOnTrack
+{
+   self.position = [self positionOnTrackWithAngle:angleOnTrack];
+   self.zRotation = angleOnTrack + M_PI/2;
 }
 
 -(CGFloat)angleWithCenter:(CGPoint)center
 {
    return atan2f(self.position.y - center.y, self.position.x - center.x);
 }
+
+- (void)jumpOnTrackAndStartPlayingWithCompletionHandler:(dispatch_block_t)completionHandler
+{
+   self.isOnTrack = YES;
+   
+   CGPoint newTrackPosition = [self positionOnTrackWithAngle:self.angleOnTrack];
+   
+   SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
+   SKAction* jumpDownAction = [SKAction moveTo:newTrackPosition duration:0.2];
+   jumpUpAction.timingMode = SKActionTimingEaseOut;
+   jumpDownAction.timingMode = SKActionTimingEaseIn;
+   [self runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:completionHandler];
+}
+
 
 - (void)jump
 {

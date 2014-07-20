@@ -12,4 +12,6 @@
 
 @property(nonatomic) CGFloat difficulty;
 
++(AIPlayerNode *)aiPlayerNodeWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider;
+
 @end

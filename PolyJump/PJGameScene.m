@@ -16,6 +16,7 @@
 #import "UIGestureRecognizer+BlocksKit.h"
 #import "SKScene+nodesWithName.h"
 #import "PJButtonLabelNode.h"
+#import "PJGameMetricProvider.h"
 
 static NSString* s_inGamePlayerName = @"player";
 static NSString* s_preparingPlayerName = @"preparingPlayer";
@@ -51,10 +52,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    
 }
 
-@interface PJGameScene () <UIGestureRecognizerDelegate>
-
-@property (nonatomic, assign, readonly) CGPoint trackCenter;
-@property (nonatomic, assign, readonly) CGFloat trackRadius;
+@interface PJGameScene () <UIGestureRecognizerDelegate, PJGameMetricProvider>
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
@@ -147,8 +145,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    NSArray* playerNodes = [self allPlayerNodes];
    for( PlayerNode* playerNode in playerNodes )
    {
-      CGFloat angle = [playerNode angleWithCenter:self.trackCenter];
-      [angles addObject:@(angle)];
+      [angles addObject:@(playerNode.angleOnTrack)];
    }
    return angles;
 }
@@ -228,9 +225,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (void)preparePlayerNode:(PlayerNode *)playerNode atAngleInDegrees:(CGFloat)angleInDegrees
 {
    CGFloat angleOnTrackRadians = radiansFromDegrees(angleInDegrees);
-   playerNode.position = [PlayerNode positionWithCenter:self.trackCenter radius:self.preparingTrackRadius angle:angleOnTrackRadians];
+   playerNode.angleOnTrack = angleOnTrackRadians;
    playerNode.name = s_preparingPlayerName;
-   playerNode.zRotation = angleOnTrackRadians + M_PI/2;
 }
 
 - (void)queuePlayerNodeForPlaying:(PlayerNode *)playerNode withDelay:(CGFloat)seconds
@@ -238,23 +234,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    // After 3 seconds, position back on the track
    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       
-      [self playPlayerNode:playerNode];
+      [playerNode jumpOnTrackAndStartPlayingWithCompletionHandler:^{
+         playerNode.name = s_inGamePlayerName;
+      }];
    });
-}
-
-- (void)playPlayerNode:(PlayerNode *)playerNode
-{
-   CGFloat angleOnTrackRadians = normalize([playerNode angleWithCenter:self.trackCenter]);
-   CGPoint trackPosition = [PlayerNode positionWithCenter:self.trackCenter radius:self.trackRadius angle:angleOnTrackRadians];
-   
-   SKAction* jumpUpAction = [SKAction moveByX:0 y:50 duration:0.2];
-   SKAction* jumpDownAction = [SKAction moveTo:trackPosition duration:0.2];
-   jumpUpAction.timingMode = SKActionTimingEaseOut;
-   jumpDownAction.timingMode = SKActionTimingEaseIn;
-   [playerNode runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:^{
-      
-      playerNode.name = s_inGamePlayerName;
-   }];
 }
 
 - (void)startGame
@@ -268,7 +251,9 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    
    [self enumerateChildNodesWithName:s_preparingPlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       PlayerNode* playerNode = (PlayerNode *)node;
-      [self playPlayerNode:playerNode];
+      [playerNode jumpOnTrackAndStartPlayingWithCompletionHandler:^{
+         playerNode.name = s_inGamePlayerName;
+      }];
       [playerNode updateAnimations];
    }];
 }
@@ -349,7 +334,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 - (AIPlayerNode *)aiPlayerNodeWithDifficulty:(CGFloat)difficulty
                        atTrackAngleInDegrees:(CGFloat)angleOnTrackDegrees
 {
-   AIPlayerNode* playerNode = [AIPlayerNode node];
+   AIPlayerNode* playerNode = [AIPlayerNode aiPlayerNodeWithGameMetricProvider:self];
    playerNode.difficulty = difficulty;
    [self preparePlayerNode:playerNode atAngleInDegrees:angleOnTrackDegrees];
    return playerNode;
@@ -357,7 +342,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)setupNinja
 {
-   self.controlledPlayerNode = [PlayerNode node];
+   self.controlledPlayerNode = [PlayerNode playerNodeWithGameMetricProvider:self];
    [self preparePlayerNode:self.controlledPlayerNode atAngleInDegrees:270];
    [self addChild:self.controlledPlayerNode];
 }
@@ -455,7 +440,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self enumerateChildNodesWithName:s_inGamePlayerName usingBlock:^(SKNode *node, BOOL *stop) {
       
       PlayerNode* playerNode = (PlayerNode *)node;
-      CGFloat testAngle = normalize([playerNode angleWithCenter:self.trackCenter]);
+      CGFloat testAngle = normalize(playerNode.angleOnTrack);
       if ( angleInRange(testAngle, angleStart, angleEnd) )
       {
          if ( (playerNode.isPunchingLeft && angleDelta > 0) ||
