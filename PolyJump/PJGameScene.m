@@ -20,6 +20,7 @@
 
 static NSString* s_inGamePlayerName = @"player";
 static NSString* s_preparingPlayerName = @"preparingPlayer";
+static const CGFloat s_swipeThreshold = 5;
 
 static CGFloat radiansFromDegrees(CGFloat degrees)
 {
@@ -52,16 +53,15 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    
 }
 
-@interface PJGameScene () <UIGestureRecognizerDelegate, PJGameMetricProvider>
+@interface PJGameScene () <PJGameMetricProvider>
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
 @property (nonatomic) PlayerNode* controlledPlayerNode;
 
-@property (nonatomic) UITapGestureRecognizer* tapRecognizer;
-@property (nonatomic) UISwipeGestureRecognizer* leftSwipeRecognizer;
-@property (nonatomic) UISwipeGestureRecognizer* rightSwipeRecognizer;
-@property (nonatomic) UISwipeGestureRecognizer* upSwipeRecognizer;
+@property (nonatomic) UIPanGestureRecognizer* panRecognizer;
+@property (nonatomic) CGPoint panStartLocation;
+@property (nonatomic) CFAbsoluteTime panStartTime;
 
 @property (nonatomic) NSInteger numHitPegs;
 @property (nonatomic) NSInteger numEnemiesLeft;
@@ -260,48 +260,63 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addGestureRecognizersToView:(SKView *)view
 {
-   self.leftSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      if ( !self.view.paused )
-         [self.controlledPlayerNode punchLeft];
-   }];
+   self.panRecognizer = [UIPanGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
 
-   self.rightSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      if ( !self.view.paused )
-      [self.controlledPlayerNode punchRight];
-   }];
-   
-   self.upSwipeRecognizer = [UISwipeGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-      if ( !self.view.paused )
+      switch (state)
       {
-         if ( self.isPlaying )
+         case UIGestureRecognizerStateBegan:
+            self.panStartLocation = location;
+            break;
+            
+         case UIGestureRecognizerStateChanged:
          {
-            [self.controlledPlayerNode jump];
+            CGPoint delta = CGPointMake(location.x - self.panStartLocation.x, location.y - self.panStartLocation.y);
+            if ( abs(delta.x) > abs(delta.y) )
+            {
+               if ( delta.x < -s_swipeThreshold )
+               {
+                  [self.controlledPlayerNode punchLeft];
+                  self.panRecognizer.enabled = NO;
+               }
+               else if ( delta.x > s_swipeThreshold )
+               {
+                  [self.controlledPlayerNode punchRight];
+                  self.panRecognizer.enabled = NO;
+               }
+            }
+            else
+            {
+               if ( abs(delta.y) > s_swipeThreshold )
+               {
+                  if ( !self.view.paused )
+                  {
+                     if ( self.isPlaying )
+                        [self.controlledPlayerNode jump];
+                     else
+                        [self startGame];
+                  }
+                  self.panRecognizer.enabled = NO;
+               }
+            }
+            break;
          }
-         else
-         {
-            [self startGame];
-         }
+            
+         case UIGestureRecognizerStateEnded:
+         case UIGestureRecognizerStateCancelled:
+            self.panRecognizer.enabled = YES;
+
+            break;
+         default:
+            break;
       }
    }];
-
-   self.leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-   self.rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-   self.upSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-
-   self.leftSwipeRecognizer.delegate = self;
-   self.rightSwipeRecognizer.delegate = self;
-   self.upSwipeRecognizer.delegate = self;
-
-   [view addGestureRecognizer:self.leftSwipeRecognizer];
-   [view addGestureRecognizer:self.rightSwipeRecognizer];
-   [view addGestureRecognizer:self.upSwipeRecognizer];
+   
+   [self.view addGestureRecognizer:self.panRecognizer];
 }
 
 - (void)removeGestureRecognizers
 {
-   [self.view removeGestureRecognizer:self.leftSwipeRecognizer];
-   [self.view removeGestureRecognizer:self.rightSwipeRecognizer];
-   [self.view removeGestureRecognizer:self.upSwipeRecognizer];
+   [self.view removeGestureRecognizer:self.panRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
