@@ -11,6 +11,7 @@
 @interface PJBarNode : SKShapeNode
 
 @property(nonatomic) BOOL isAccelerating;
+@property(nonatomic, readonly) CGFloat velocity;
 
 +(PJBarNode *)nodeWithBarLength:(CGFloat)barLength;
 

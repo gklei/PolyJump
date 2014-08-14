@@ -56,6 +56,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 @property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic) PJBarNode* barNode;
+@property (nonatomic) SKLabelNode* debugNode;
 @property (nonatomic) PlayerNode* controlledPlayerNode;
 
 @property (nonatomic) CGPoint touchBeginLocation;
@@ -84,6 +85,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.backgroundColor = [SKColor colorWithWhite:.9 alpha:1];
       
       [self setupPauseButton];
+      [self setupDebugNode];
       [self setupInstructions];
       [self setupTrack];
       [self setupBar];
@@ -110,6 +112,18 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.lastTime = 0;
    };
    [self addChild:buttonNode];
+}
+
+- (void)setupDebugNode
+{
+   SKLabelNode* labelNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   labelNode.fontSize = 14;
+   labelNode.fontColor = [SKColor blackColor];
+   labelNode.text = @"speed: ";
+   labelNode.position = CGPointMake(55, 20);
+   labelNode.name = @"debug";
+   [self addChild:labelNode];
+   self.debugNode = labelNode;
 }
 
 - (void)setupInstructions
@@ -343,6 +357,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       NSTimeInterval dt = currentTime - self.lastTime;
       CGFloat oldBarAngle = self.barNode.zRotation;
       [self.barNode updateWithDeltaTime:dt];
+      
+      self.debugNode.text = [NSString stringWithFormat:@"speed = %2.2f", self.barNode.velocity];
       CGFloat newBarAngle = self.barNode.zRotation;
       
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
