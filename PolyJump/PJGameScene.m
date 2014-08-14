@@ -13,7 +13,6 @@
 #import "AIPlayerNode.h"
 #import "PJButtonLabelNode.h"
 #import "PJMainMenuScene.h"
-#import "UIGestureRecognizer+BlocksKit.h"
 #import "SKScene+nodesWithName.h"
 #import "PJButtonLabelNode.h"
 #import "PJGameMetricProvider.h"
@@ -258,73 +257,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
 }
 
-- (void)addGestureRecognizersToView:(SKView *)view
-{
-//   self.panRecognizer = [UIPanGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-//
-//      switch (state)
-//      {
-//         case UIGestureRecognizerStateBegan:
-//            NSLog(@"BEGAN");
-//            self.panStartLocation = location;
-//            break;
-//            
-//         case UIGestureRecognizerStateChanged:
-//         {
-//            CGPoint delta = CGPointMake(location.x - self.panStartLocation.x, location.y - self.panStartLocation.y);
-//            if ( abs(delta.x) > abs(delta.y) )
-//            {
-//               if ( delta.x < -s_swipeThreshold )
-//               {
-//                  [self.controlledPlayerNode punchLeft];
-//                  self.panRecognizer.enabled = NO;
-//               }
-//               else if ( delta.x > s_swipeThreshold )
-//               {
-//                  [self.controlledPlayerNode punchRight];
-//                  self.panRecognizer.enabled = NO;
-//               }
-//            }
-//            else
-//            {
-//               if ( abs(delta.y) > s_swipeThreshold )
-//               {
-//                  if ( !self.view.paused )
-//                  {
-//                     if ( self.isPlaying )
-//                        [self.controlledPlayerNode jump];
-//                     else
-//                        [self startGame];
-//                  }
-//                  self.panRecognizer.enabled = NO;
-//               }
-//            }
-//            break;
-//         }
-//            
-//         case UIGestureRecognizerStateEnded:
-//         case UIGestureRecognizerStateCancelled:
-//            self.panRecognizer.enabled = YES;
-//
-//            break;
-//         default:
-//            break;
-//      }
-//   }];
-//   
-//   [self.view addGestureRecognizer:self.panRecognizer];
-}
-
-- (void)removeGestureRecognizers
-{
-//   [self.view removeGestureRecognizer:self.panRecognizer];
-}
-
-- (void)didMoveToView:(SKView *)view
-{
-   [self addGestureRecognizersToView:view];
-}
-
 - (void)setupTrack
 {
    SKShapeNode* track = [SKShapeNode node];
@@ -518,7 +450,6 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 -(void)endGame:(BOOL)win
 {
    self.scene.view.paused = YES;
-   [self removeGestureRecognizers];
    
    SKSpriteNode* endColorNode = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithWhite:0.9 alpha:0.8] size:self.frame.size];
    endColorNode.anchorPoint = CGPointMake(0, 0);
