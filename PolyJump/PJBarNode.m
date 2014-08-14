@@ -11,6 +11,7 @@
 @interface PJBarNode()
 
 @property(nonatomic) CGFloat velocity;
+@property(nonatomic) CGFloat extraSpeedApplied;
 
 @end
 
@@ -42,14 +43,44 @@
 
 -(void)updateWithDeltaTime:(NSTimeInterval)deltaTime
 {
+   [self dampenExtraVelocityWithDeltaTime:deltaTime];
    self.zRotation = self.zRotation + self.velocity*deltaTime;
    if ( self.isAccelerating )
       self.velocity = MIN(self.velocity*1.0005, 8);
 }
 
--(void)reverseDirection
+-(void)addSpeed:(CGFloat)speed
 {
+   if ( self.velocity > 0 )
+   {
+      self.velocity = self.velocity + speed;
+   }
+   else
+   {
+      self.velocity = self.velocity - speed;
+   }
+}
+
+-(void)reverseDirectionWithExtraHitPower:(CGFloat)extraHitPower
+{
+   CGFloat extraSpeed = extraHitPower * 4;
+   [self addSpeed:extraSpeed];
+   self.extraSpeedApplied = extraSpeed;
+
    self.velocity = -self.velocity;
+}
+
+- (void)dampenExtraVelocityWithDeltaTime:(NSTimeInterval)deltaTime
+{
+   if ( self.extraSpeedApplied > 0 )
+   {
+      CGFloat speedToDampenPerSecond = 2;
+      CGFloat speedToDampen = speedToDampenPerSecond * deltaTime;
+      CGFloat clampedSpeedToDampen = MIN( speedToDampen, self.extraSpeedApplied );
+      
+      self.extraSpeedApplied = self.extraSpeedApplied - clampedSpeedToDampen;
+      [self addSpeed:-clampedSpeedToDampen];
+   }
 }
 
 @end

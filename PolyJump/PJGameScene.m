@@ -472,7 +472,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
               (playerNode.isPunchingRight && angleDelta < 0) )
          {
             NSLog(@"playerNode hit power = %f", playerNode.extraHitPower);
-            [self.barNode reverseDirection];
+            [self.barNode reverseDirectionWithExtraHitPower:playerNode.extraHitPower];
             [playerNode makeInvincibleForSeconds:1/30.0f]; // Necessary because the bar will still be hitting the player the next frame
             [playerNode resetHitPower];
          }

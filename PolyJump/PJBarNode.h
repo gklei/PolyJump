@@ -15,6 +15,6 @@
 +(PJBarNode *)nodeWithBarLength:(CGFloat)barLength;
 
 -(void)updateWithDeltaTime:(NSTimeInterval)deltaTime;
--(void)reverseDirection;
+-(void)reverseDirectionWithExtraHitPower:(CGFloat)extraHitPower;
 
 @end
