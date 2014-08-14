@@ -414,6 +414,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       CGFloat newBarAngle = self.barNode.zRotation;
       
       [self hitTestWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
+      [self updateControllerPlayerPowerWithDelta:dt];
       [self updateDecisionsWithOldBarAngle:oldBarAngle newBarAngle:newBarAngle];
       
       self.totalGameTime = self.totalGameTime + dt;
@@ -447,6 +448,14 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    }];
 }
 
+-(void)updateControllerPlayerPowerWithDelta:(CGFloat)dt
+{
+   if ( self.touchesAllowAction )
+   {
+      [self.controlledPlayerNode incrementHitPowerWithDelta:dt];
+   }
+}
+
 -(void)hitTestWithOldBarAngle:(CGFloat)oldBarAngle newBarAngle:(CGFloat)newBarAngle
 {
    CGFloat angleDelta = newBarAngle - oldBarAngle;
@@ -462,8 +471,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
          if ( (playerNode.isPunchingLeft && angleDelta > 0) ||
               (playerNode.isPunchingRight && angleDelta < 0) )
          {
+            NSLog(@"playerNode hit power = %f", playerNode.extraHitPower);
             [self.barNode reverseDirection];
             [playerNode makeInvincibleForSeconds:1/30.0f]; // Necessary because the bar will still be hitting the player the next frame
+            [playerNode resetHitPower];
          }
          else if ( playerNode.isJumping )
          {

@@ -173,4 +173,14 @@
    });
 }
 
+- (void)incrementHitPowerWithDelta:(CGFloat)delta
+{
+   self.extraHitPower += delta;
+}
+
+- (void)resetHitPower
+{
+   self.extraHitPower = 0;
+}
+
 @end

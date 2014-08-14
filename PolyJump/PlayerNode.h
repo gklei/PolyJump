@@ -29,6 +29,8 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
 
 @property(nonatomic) CGFloat angleOnTrack;
 
+@property(nonatomic) CGFloat extraHitPower;
+
 +(PlayerNode *)playerNodeWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider;
 - (instancetype)initWithGameMetricProvider:(id<PJGameMetricProvider>)gameMetricProvider;
 
@@ -47,5 +49,7 @@ typedef NS_OPTIONS(NSUInteger, PlayerState) {
                            trackRadius:(CGFloat)trackRadius;
 
 - (void)makeInvincibleForSeconds:(CGFloat)seconds;
+- (void)incrementHitPowerWithDelta:(CGFloat)delta;
+- (void)resetHitPower;
 
 @end
