@@ -59,9 +59,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) PJBarNode* barNode;
 @property (nonatomic) PlayerNode* controlledPlayerNode;
 
-@property (nonatomic) UIPanGestureRecognizer* panRecognizer;
-@property (nonatomic) CGPoint panStartLocation;
-@property (nonatomic) CFAbsoluteTime panStartTime;
+@property (nonatomic) CGPoint touchBeginLocation;
+@property (nonatomic) BOOL touchesAllowAction;
 
 @property (nonatomic) NSInteger numHitPegs;
 @property (nonatomic) NSInteger numEnemiesLeft;
@@ -94,6 +93,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       self.currentLevelNumber = 0;
       
       self.isPlaying = NO;
+      self.touchesAllowAction = NO;
    }
    return self;
 }
@@ -260,63 +260,64 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 
 - (void)addGestureRecognizersToView:(SKView *)view
 {
-   self.panRecognizer = [UIPanGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-
-      switch (state)
-      {
-         case UIGestureRecognizerStateBegan:
-            self.panStartLocation = location;
-            break;
-            
-         case UIGestureRecognizerStateChanged:
-         {
-            CGPoint delta = CGPointMake(location.x - self.panStartLocation.x, location.y - self.panStartLocation.y);
-            if ( abs(delta.x) > abs(delta.y) )
-            {
-               if ( delta.x < -s_swipeThreshold )
-               {
-                  [self.controlledPlayerNode punchLeft];
-                  self.panRecognizer.enabled = NO;
-               }
-               else if ( delta.x > s_swipeThreshold )
-               {
-                  [self.controlledPlayerNode punchRight];
-                  self.panRecognizer.enabled = NO;
-               }
-            }
-            else
-            {
-               if ( abs(delta.y) > s_swipeThreshold )
-               {
-                  if ( !self.view.paused )
-                  {
-                     if ( self.isPlaying )
-                        [self.controlledPlayerNode jump];
-                     else
-                        [self startGame];
-                  }
-                  self.panRecognizer.enabled = NO;
-               }
-            }
-            break;
-         }
-            
-         case UIGestureRecognizerStateEnded:
-         case UIGestureRecognizerStateCancelled:
-            self.panRecognizer.enabled = YES;
-
-            break;
-         default:
-            break;
-      }
-   }];
-   
-   [self.view addGestureRecognizer:self.panRecognizer];
+//   self.panRecognizer = [UIPanGestureRecognizer bk_recognizerWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+//
+//      switch (state)
+//      {
+//         case UIGestureRecognizerStateBegan:
+//            NSLog(@"BEGAN");
+//            self.panStartLocation = location;
+//            break;
+//            
+//         case UIGestureRecognizerStateChanged:
+//         {
+//            CGPoint delta = CGPointMake(location.x - self.panStartLocation.x, location.y - self.panStartLocation.y);
+//            if ( abs(delta.x) > abs(delta.y) )
+//            {
+//               if ( delta.x < -s_swipeThreshold )
+//               {
+//                  [self.controlledPlayerNode punchLeft];
+//                  self.panRecognizer.enabled = NO;
+//               }
+//               else if ( delta.x > s_swipeThreshold )
+//               {
+//                  [self.controlledPlayerNode punchRight];
+//                  self.panRecognizer.enabled = NO;
+//               }
+//            }
+//            else
+//            {
+//               if ( abs(delta.y) > s_swipeThreshold )
+//               {
+//                  if ( !self.view.paused )
+//                  {
+//                     if ( self.isPlaying )
+//                        [self.controlledPlayerNode jump];
+//                     else
+//                        [self startGame];
+//                  }
+//                  self.panRecognizer.enabled = NO;
+//               }
+//            }
+//            break;
+//         }
+//            
+//         case UIGestureRecognizerStateEnded:
+//         case UIGestureRecognizerStateCancelled:
+//            self.panRecognizer.enabled = YES;
+//
+//            break;
+//         default:
+//            break;
+//      }
+//   }];
+//   
+//   [self.view addGestureRecognizer:self.panRecognizer];
 }
 
 - (void)removeGestureRecognizers
 {
-   [self.view removeGestureRecognizer:self.panRecognizer];
+//   [self.view removeGestureRecognizer:self.panRecognizer];
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -541,6 +542,64 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
       [self.view presentScene:scene];
    };
    [self addChild:quitButton];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+   CGPoint location = [[[event allTouches] anyObject] locationInView:self.view];
+   self.touchBeginLocation = location;
+   self.touchesAllowAction = YES;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+   if ( self.touchesAllowAction == NO )
+      return;
+   
+   CGPoint location = [[[event allTouches] anyObject] locationInView:self.view];
+   CGPoint delta = CGPointMake(location.x - self.touchBeginLocation.x, location.y - self.touchBeginLocation.y);
+   if ( abs(delta.x) > abs(delta.y) )
+   {
+      if ( delta.x < -s_swipeThreshold )
+      {
+         [self.controlledPlayerNode punchLeft];
+         self.touchesAllowAction = NO;
+      }
+      else if ( delta.x > s_swipeThreshold )
+      {
+         [self.controlledPlayerNode punchRight];
+         self.touchesAllowAction = NO;
+      }
+   }
+   else
+   {
+      if ( abs(delta.y) > s_swipeThreshold )
+      {
+         if ( !self.view.paused )
+         {
+            if ( self.isPlaying )
+            {
+               [self.controlledPlayerNode jump];
+               self.touchesAllowAction = NO;
+            }
+            else
+            {
+               [self startGame];
+               self.touchesAllowAction = NO;
+            }
+         }
+      }
+   }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+   self.touchesAllowAction = NO;
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+   self.touchesAllowAction = NO;
 }
 
 @end
