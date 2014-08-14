@@ -38,8 +38,8 @@
       self.gameMetricProvider = gameMetricProvider;
       self.spineNode = [SGG_Spine node];
       [self.spineNode skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
-      self.spineNode.xScale = 0.4;
-      self.spineNode.yScale = 0.4;
+      self.spineNode.xScale = 0.3;
+      self.spineNode.yScale = 0.3;
       [self addChild:self.spineNode];
    }
    return self;
