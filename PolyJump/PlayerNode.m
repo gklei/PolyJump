@@ -14,6 +14,7 @@
 @property(nonatomic) SGG_Spine* spineNode;
 @property(nonatomic, weak) id<PJGameMetricProvider> gameMetricProvider;
 @property(nonatomic) BOOL isOnTrack;
+@property(nonatomic) SKShapeNode* powerSwipeNode;
 @end
 
 @implementation PlayerNode
@@ -36,6 +37,19 @@
    {
       self.isOnTrack = NO;
       self.gameMetricProvider = gameMetricProvider;
+      
+      self.powerSwipeNode = [SKShapeNode node];
+      CGFloat radius = 20;
+      CGRect rect = CGRectMake(-radius, -radius, radius*2, radius*2);
+      
+      UIBezierPath* trackPath = [UIBezierPath bezierPathWithOvalInRect:rect];
+      self.powerSwipeNode.path = trackPath.CGPath;
+      self.powerSwipeNode.fillColor = [SKColor purpleColor];
+      self.powerSwipeNode.antialiased = YES;
+      self.powerSwipeNode.alpha = 0;
+      [self addChild:self.powerSwipeNode];
+
+      
       self.spineNode = [SGG_Spine node];
       [self.spineNode skeletonFromFileNamed:@"skeleton" andAtlasNamed:@"skeleton" andUseSkinNamed:Nil];
       self.spineNode.xScale = 0.3;
@@ -103,6 +117,8 @@
    jumpUpAction.timingMode = SKActionTimingEaseOut;
    jumpDownAction.timingMode = SKActionTimingEaseIn;
    [self runAction:[SKAction sequence:@[jumpUpAction, jumpDownAction]] completion:completionHandler];
+
+   self.extraHitPower = 0;
 }
 
 
@@ -122,6 +138,8 @@
    [self.spineNode runAction:jumpAction completion:^{
       self.state = PlayerStateIdle;
    }];
+
+   self.extraHitPower = 0;
 }
 
 - (void)punchLeft
@@ -175,7 +193,7 @@
 
 - (void)incrementHitPowerWithDelta:(CGFloat)delta
 {
-   self.extraHitPower += delta;
+   self.extraHitPower = self.extraHitPower + delta;
 }
 
 - (void)resetHitPower
@@ -183,4 +201,20 @@
    self.extraHitPower = 0;
 }
 
+- (void)setExtraHitPower:(CGFloat)extraHitPower
+{
+   _extraHitPower = extraHitPower;
+   if ( _extraHitPower > 0 )
+   {
+      CGFloat extraPower = extraHitPower;
+      CGFloat scale = 0.001 + extraPower;
+      self.powerSwipeNode.xScale = scale;
+      self.powerSwipeNode.yScale = scale;
+      self.powerSwipeNode.alpha = 1;
+   }
+   else
+   {
+      [self.powerSwipeNode runAction:[SKAction fadeAlphaTo:0 duration:0.2]];
+   }
+}
 @end
