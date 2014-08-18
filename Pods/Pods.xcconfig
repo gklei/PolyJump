@@ -1,5 +1,6 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/BlocksKit"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers" -isystem "${PODS_ROOT}/Headers/BlocksKit"
-OTHER_LDFLAGS = -ObjC -framework MessageUI
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/BlocksKit" "${PODS_ROOT}/Headers/FlurrySDK" "${PODS_ROOT}/Headers/Google-AdMob-Ads-SDK"
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/FlurrySDK/FlurryAds" "$(PODS_ROOT)/FlurrySDK/Flurry" "$(PODS_ROOT)/Google-AdMob-Ads-SDK/GoogleAdMobAdsSdkiOS-6.8.0"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers" -isystem "${PODS_ROOT}/Headers/BlocksKit" -isystem "${PODS_ROOT}/Headers/FlurrySDK" -isystem "${PODS_ROOT}/Headers/Google-AdMob-Ads-SDK"
+OTHER_LDFLAGS = -ObjC -lFlurryAds_5.2.0 -lFlurry_5.2.0 -lGoogleAdMobAds -lz -framework AVFoundation -framework AdSupport -framework AudioToolbox -framework CoreGraphics -framework CoreTelephony -framework Foundation -framework MediaPlayer -framework MessageUI -framework Security -framework StoreKit -framework SystemConfiguration -framework UIKit -framework iAd -weak_framework AdSupport -weak_framework StoreKit
 PODS_ROOT = ${SRCROOT}/Pods

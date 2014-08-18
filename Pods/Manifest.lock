@@ -14,11 +14,22 @@ PODS:
   - BlocksKit/UIKit (2.2.3):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - FlurrySDK (5.2.0):
+    - FlurrySDK/FlurryAds
+    - FlurrySDK/FlurrySDK
+  - FlurrySDK/FlurryAds (5.2.0):
+    - FlurrySDK/FlurrySDK
+  - FlurrySDK/FlurrySDK (5.2.0)
+  - Google-AdMob-Ads-SDK (6.8.0)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2)
+  - FlurrySDK (~> 5.2)
+  - Google-AdMob-Ads-SDK (~> 6.8)
 
 SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
+  FlurrySDK: 5322b9eb0d0b538f1a1983a6717f3a2e2ba03047
+  Google-AdMob-Ads-SDK: ec4a2941cc0aabaf06bf4a709216d3e94ad7b46b
 
 COCOAPODS: 0.32.1
