@@ -62,10 +62,8 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) CGPoint touchBeginLocation;
 @property (nonatomic) BOOL touchesAllowAction;
 
-@property (nonatomic) NSInteger numHitPegs;
-@property (nonatomic) NSInteger numEnemiesLeft;
-@property (nonatomic) NSInteger numPreparingEnemies;
-
+@property (nonatomic, readonly) NSInteger numEnemiesLeft;
+@property (nonatomic, readonly) NSInteger numPreparingEnemies;
 
 @property (nonatomic) NSInteger currentLevelNumber;
 @property (nonatomic) BOOL settingUpNextLevel;
@@ -73,6 +71,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 @property (nonatomic) BOOL isPlaying;
 
 @property (nonatomic) NSTimeInterval totalGameTime;
+@property (nonatomic) NSUInteger numEnemiesDefeated;
 
 @end
 
@@ -257,6 +256,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
 {
    self.isPlaying = YES;
    self.totalGameTime = 0;
+   self.numEnemiesDefeated = 0;
    
    self.barNode.isAccelerating = YES;
    
@@ -433,7 +433,11 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
             {
                playerNode.state = PlayerStateDead;
                [playerNode removeFromParent];
-               self.numHitPegs = self.numHitPegs + 1;
+               
+               if ( playerNode != self.controlledPlayerNode )
+               {
+                  self.numEnemiesDefeated = self.numEnemiesDefeated + 1;
+               }
             }
          }
       }
@@ -472,17 +476,42 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    endColorNode.zPosition = 1;
    [self addChild:endColorNode];
    
+   SKLabelNode* numEnemiesNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   numEnemiesNode.fontSize = 20;
+   numEnemiesNode.fontColor = [SKColor blackColor];
+   numEnemiesNode.text = [NSString stringWithFormat:@"Enemies Defeated: %ld", (long)self.numEnemiesDefeated];
+   numEnemiesNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 200);
+   [self addChild:numEnemiesNode];
+   numEnemiesNode.zPosition = 2;
+
+   SKLabelNode* timeLastedNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   timeLastedNode.fontSize = 20;
+   timeLastedNode.fontColor = [SKColor blackColor];
+   timeLastedNode.text = [NSString stringWithFormat:@"Seconds Lasted: %ld", (long)round(self.totalGameTime)];
+   timeLastedNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 150);
+   [self addChild:timeLastedNode];
+   timeLastedNode.zPosition = 2;
+
+   SKLabelNode* yourScoreIsNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
+   yourScoreIsNode.fontSize = 28;
+   yourScoreIsNode.fontColor = [SKColor blackColor];
+   yourScoreIsNode.text = @"Your Score Is";
+   yourScoreIsNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 100);
+   [self addChild:yourScoreIsNode];
+   yourScoreIsNode.zPosition = 2;
+
+   NSUInteger score = round(self.totalGameTime) + self.numEnemiesDefeated;
    SKLabelNode* scoreNode = [SKLabelNode labelNodeWithFontNamed:@"Futura-Medium"];
-   scoreNode.fontSize = 28;
+   scoreNode.fontSize = 64;
    scoreNode.fontColor = [SKColor blackColor];
-   scoreNode.text = [NSString stringWithFormat:@"Score: %ld seconds", (long)round(self.totalGameTime)];
-   scoreNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 200);
+   scoreNode.text = [NSString stringWithFormat:@"%ld", (long)score];
+   scoreNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
    [self addChild:scoreNode];
    scoreNode.zPosition = 2;
-   
+
    
    PJButtonLabelNode* retryButton = [PJButtonLabelNode nodeWithText:@"Retry"];
-   retryButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+   retryButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 100);
    retryButton.zPosition = 2;
    retryButton.touchEndedHandler = ^{
       self.scene.view.paused = NO;
@@ -491,7 +520,7 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    [self addChild:retryButton];
    
    PJButtonLabelNode* quitButton = [PJButtonLabelNode nodeWithText:@"Quit"];
-   quitButton.position = CGPointMake(retryButton.position.x, retryButton.position.y - 100);
+   quitButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.frame) + 50);
    quitButton.zPosition = 2;
    quitButton.touchEndedHandler = ^{
       self.scene.view.paused = NO;
