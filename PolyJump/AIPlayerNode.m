@@ -78,8 +78,10 @@ static bool angleInRange(CGFloat angle, CGFloat angleStart, CGFloat angleEnd)
    {
       CGFloat startOffset = rand() % 20;
       CGFloat lookAheadStart = oldBarAngle + radiansFromDegrees(barDirectionMultiplier * startOffset);
+      
       CGFloat endOffset = -5 + (rand() % 100*self.difficulty);
       CGFloat lookAheadEnd = newBarAngle + radiansFromDegrees(barDirectionMultiplier * endOffset);
+      
       normalizeRange(&lookAheadStart, &lookAheadEnd);
       if ( angleInRange(angleOnTrack, lookAheadStart, lookAheadEnd) )
       {
